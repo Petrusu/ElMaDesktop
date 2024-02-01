@@ -2,7 +2,106 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ElMaDesktop.UserPages.MainUserControll">
-    Welcome to Avalonia!
+             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             x:Class="ElMaDesktop.UserPages.MainUserControll"
+             FontFamily="Trebuchet MS">
+    <UserControl.Styles>
+        <Style Selector="TextBox">
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Background" Value="#EEF2FF"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="Width" Value="700"/>
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="Foreground" Value="#5B75BC"/>
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Background" Value="#1A3FA3"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#EEF2FF"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#EEF2FF"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Foreground" Value="#5B75BC"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="50,3*,*" RowDefinitions="*,5*,50">
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
+                    Background="#4E7CF9" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
+                 <Image Source="../Images/logo.png" Width="200" VerticalAlignment="Center" Margin="30"/>
+            </StackPanel>
+           <StackPanel Orientation="Horizontal">
+               <TextBox x:Name="SearchTextBox" VerticalAlignment="Center"
+                        Watermark="  Поиск..."/>
+               
+           </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавть" x:Name="AddBtn" Click="AddBtn_OnClick"/>
+            </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*,*,*">
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Image Source="{Binding ImageBook}" Width="200"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Title}"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SeriesName}"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Publisher}"/>
+                            <TextBlock Text="{Binding PlaceOfPublication}"/>
+                            <TextBlock Text="{Binding YearOfPublication}"/>
+                            <TextBlock Text="{Binding Authors[0]}" />
+                            <TextBlock Text="{Binding Editors[0]}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Button Content="Редактировать"/>
+                            <Button Content="Удалить"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top"  Grid.Column="2" Grid.Row="1">
+            <ComboBox x:Name="SortComboBox" 
+                      SelectedIndex="0"
+                      SelectionChanged="SortComboBox_OnSelectionChanged">
+                <ComboBox.Items>
+                    <TextBlock Text="А -> Я"/>
+                    <TextBlock Text="Я -> А"/>
+                </ComboBox.Items>
+            </ComboBox>
+            <ComboBox x:Name="AuthorComboBox" SelectionChanged="AuthorComboBox_OnSelectionChanged"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="1">
+            <ComboBox x:Name="EditorComboBox" SelectionChanged="EditorComboBox_OnSelectionChanged"/>
+            <ComboBox x:Name="ThemesComboBox" SelectionChanged="ThemesComboBox_OnSelectionChanged"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <TextBlock Text="{Binding CountBook}"/>
+        </StackPanel>
+    </Grid>
 </UserControl>
