@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="ElMaDesktop/MainWindow.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
+        <entry key="ElMaDesktop/UserPages/AutorizationUserControl.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
