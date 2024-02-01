@@ -65,7 +65,7 @@
                 </ComboBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Button Content="Добавть" HorizontalAlignment="Center" x:Name="AddBtn" Click="AddBtn_OnClick"/>
+                <Button Content="Добавить" HorizontalAlignment="Center" x:Name="AddBtn" Click="AddBtn_OnClick"/>
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox">
@@ -90,15 +90,16 @@
                         </StackPanel>
                         <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            <Button Content="Редактировать"/>
-                            <Button Content="Удалить"/>
+                            <Button Content="Редактировать" x:Name="EditBtn"
+                                    Click="EditBtn_OnClick"
+                                    Tag="{Binding Id}"/>
+                            <Button Content="Удалить" x:Name="DeliteBtn"
+                                    Click="DeliteBtn_OnClick"
+                                    Tag="{Binding Id}"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Column="1" Grid.Row="2">
-            <TextBlock Text="{Binding CountBook}"/>
-        </StackPanel>
     </Grid>
 </UserControl>

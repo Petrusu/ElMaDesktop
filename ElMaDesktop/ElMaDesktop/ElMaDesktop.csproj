@@ -32,4 +32,12 @@
       <None Remove="Images\logo.png" />
       <AvaloniaResource Include="Images\logo.png" />
     </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Update="UserPages\AddEditUserControll.axaml.cs">
+        <DependentUpon>AddEditUserControll.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>
