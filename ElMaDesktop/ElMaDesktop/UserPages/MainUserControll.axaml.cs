@@ -26,9 +26,6 @@ public partial class MainUserControll : UserControl
         SearchTextBox = this.Find<TextBox>("SearchTextBox");
         AddBtn = this.Find<Button>("AddBtn");
         SortComboBox = this.Find<ComboBox>("SortComboBox");
-        AuthorComboBox = this.Find<ComboBox>("AuthorComboBox");
-        EditorComboBox = this.Find<ComboBox>("EditorComboBox");
-        ThemesComboBox = this.Find<ComboBox>("ThemesComboBox");
         BooksListBox = this.Find<ListBox>("BooksListBox");
         LoadListBox();
     }
@@ -42,7 +39,7 @@ public partial class MainUserControll : UserControl
             {
                 if (SortComboBox != null && SortComboBox.SelectedIndex != 1)
                 {
-                    var response = await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksTitleOrderBy");
+                    var response = await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksOrderBy");
                     if (response.IsSuccessStatusCode)
                     {
                         var jsonString = await response.Content.ReadAsStringAsync();
@@ -55,19 +52,19 @@ public partial class MainUserControll : UserControl
                     }
                     else
                     {
-                        // Обработка ошибки при запросе к API
+                        /*// Обработка ошибки при запросе к API
 
                         var box = MessageBoxManager
                             .GetMessageBoxStandard("Ошибка", $"Ошибка при получении данных из API",
                                 ButtonEnum.Ok);
 
-                        var result = await box.ShowAsync();
+                        var result = await box.ShowAsync();*/
                     }
                 }
                 if (SortComboBox != null && SortComboBox.SelectedIndex != 0)
                 {
                     var responsee =
-                        await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksTitleOrderByDescending");
+                        await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksOrderByDescending");
                     if (responsee.IsSuccessStatusCode)
                     {
                         var jsonString = await responsee.Content.ReadAsStringAsync();
@@ -82,11 +79,33 @@ public partial class MainUserControll : UserControl
                     {
                         // Обработка ошибки при запросе к API
 
-                        var box = MessageBoxManager
+                        /*var box = MessageBoxManager
                             .GetMessageBoxStandard("Ошибка", $"Ошибка при получении данных из API",
                                 ButtonEnum.Ok);
 
-                        var result = await box.ShowAsync();
+                        var result = await box.ShowAsync();*/
+                    }
+                }
+                if ( SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text)) // Проверка наличия текста для поиска
+                {
+                    var searchResponse = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/Search?searchTerm={Uri.EscapeDataString(SearchTextBox.Text)}");
+
+                    if (searchResponse.IsSuccessStatusCode)
+                    {
+                        var searchJsonString = await searchResponse.Content.ReadAsStringAsync();
+                        var searchBooksData = JsonConvert.DeserializeObject<List<BooksCard>>(searchJsonString);
+
+                        // Привяжите объекты к свойству ItemsSource вашего ListBox
+                        BooksListBox.ItemsSource = searchBooksData;
+                    }
+                    else
+                    {
+                        // Обработка ошибки при запросе к API для поиска
+                        /*var searchErrorBox = MessageBoxManager
+                            .GetMessageBoxStandard("Ошибка", $"Ошибка при выполнении поиска",
+                                ButtonEnum.Ok);
+
+                        var searchErrorResult = await searchErrorBox.ShowAsync();*/
                     }
                 }
             }
@@ -100,29 +119,19 @@ public partial class MainUserControll : UserControl
             }
         }
     }
-
+    
     private void SortComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         LoadListBox();
     }
 
-    private void AuthorComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void EditorComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    private void ThemesComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void AddBtn_OnClick(object? sender, RoutedEventArgs e)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void SearchTextBox_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        LoadListBox();
     }
 }

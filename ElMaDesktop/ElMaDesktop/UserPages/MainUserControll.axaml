@@ -10,7 +10,7 @@
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="20"/>
-            <Setter Property="Width" Value="700"/>
+            <Setter Property="Width" Value="800"/>
             <Setter Property="Height" Value="70"/>
             <Setter Property="FontSize" Value="40"/>
             <Setter Property="Foreground" Value="#5B75BC"/>
@@ -29,7 +29,7 @@
         </Style>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#EEF2FF"/>
-            <Setter Property="Width" Value="200"/>
+            <Setter Property="Width" Value="300"/>
             <Setter Property="Height" Value="70"/>
             <Setter Property="CornerRadius" Value="100"/>
             <Setter Property="Margin" Value="15"/>
@@ -41,7 +41,7 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
-    <Grid ColumnDefinitions="50,3*,*" RowDefinitions="*,5*,50">
+    <Grid ColumnDefinitions="50,*,50" RowDefinitions="*,5*,50">
         <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
                     Background="#4E7CF9" Orientation="Horizontal">
             <StackPanel Orientation="Horizontal">
@@ -49,11 +49,23 @@
             </StackPanel>
            <StackPanel Orientation="Horizontal">
                <TextBox x:Name="SearchTextBox" VerticalAlignment="Center"
-                        Watermark="  Поиск..."/>
-               
+                        HorizontalAlignment="Center"
+                        Watermark="  Поиск..."
+                        PropertyChanged="SearchTextBox_OnPropertyChanged"/>
            </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Button Content="Добавть" x:Name="AddBtn" Click="AddBtn_OnClick"/>
+                <ComboBox x:Name="SortComboBox" 
+                          HorizontalAlignment="Center"
+                          SelectedIndex="0"
+                          SelectionChanged="SortComboBox_OnSelectionChanged">
+                    <ComboBox.Items>
+                        <TextBlock Text="А -> Я"/>
+                        <TextBlock Text="Я -> А"/>
+                    </ComboBox.Items>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Добавть" HorizontalAlignment="Center" x:Name="AddBtn" Click="AddBtn_OnClick"/>
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox">
@@ -85,21 +97,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top"  Grid.Column="2" Grid.Row="1">
-            <ComboBox x:Name="SortComboBox" 
-                      SelectedIndex="0"
-                      SelectionChanged="SortComboBox_OnSelectionChanged">
-                <ComboBox.Items>
-                    <TextBlock Text="А -> Я"/>
-                    <TextBlock Text="Я -> А"/>
-                </ComboBox.Items>
-            </ComboBox>
-            <ComboBox x:Name="AuthorComboBox" SelectionChanged="AuthorComboBox_OnSelectionChanged"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="1">
-            <ComboBox x:Name="EditorComboBox" SelectionChanged="EditorComboBox_OnSelectionChanged"/>
-            <ComboBox x:Name="ThemesComboBox" SelectionChanged="ThemesComboBox_OnSelectionChanged"/>
-        </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="2">
             <TextBlock Text="{Binding CountBook}"/>
         </StackPanel>
