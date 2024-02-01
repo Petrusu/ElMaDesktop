@@ -6,7 +6,7 @@ public class NavigationManager
 {
     private static ContentControl ContentControl;
 
-    private static void Inizialize(ContentControl _contentControl)
+    public static void Inizialize(ContentControl _contentControl)
     {
         ContentControl = _contentControl;
     }

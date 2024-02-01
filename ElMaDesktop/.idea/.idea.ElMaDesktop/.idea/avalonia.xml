@@ -5,6 +5,7 @@
       <map>
         <entry key="ElMaDesktop/MainWindow.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
         <entry key="ElMaDesktop/UserPages/AutorizationUserControl.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
+        <entry key="ElMaDesktop/UserPages/MainUserControll.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
       </map>
     </option>
   </component>

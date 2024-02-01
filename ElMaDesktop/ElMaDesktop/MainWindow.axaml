@@ -4,6 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ElMaDesktop.MainWindow"
-        Title="ElMaDesktop">
-    Welcome to Avalonia!
+        Icon="/Images/ElMa-rtk.ico.ico"
+        WindowState="Maximized"
+        SystemDecorations="Full"
+        CanResize="False"
+        Title="Электронный библиотечный каталог ElMa-rtk">
+    <ContentControl x:Name="ContentControl"/>
 </Window>

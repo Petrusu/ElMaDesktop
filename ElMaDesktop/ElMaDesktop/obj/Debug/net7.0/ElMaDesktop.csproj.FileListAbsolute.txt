@@ -129,3 +129,10 @@ C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.
 C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.csproj.CopyComplete
 C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.genruntimeconfig.cache
 C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ref\ElMaDesktop.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.sourcelink.json
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\ColorTextBlock.Avalonia.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\DialogHost.Avalonia.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Markdown.Avalonia.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\MsBox.Avalonia.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Sofa\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\System.Reactive.dll

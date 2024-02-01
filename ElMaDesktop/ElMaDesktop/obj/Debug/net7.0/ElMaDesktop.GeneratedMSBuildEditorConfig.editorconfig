@@ -25,3 +25,6 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [C:/Users/Sofa/Desktop/diplom/ElMaDesktop/ElMaDesktop/ElMaDesktop/UserPages/AutorizationUserControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/Sofa/Desktop/diplom/ElMaDesktop/ElMaDesktop/ElMaDesktop/UserPages/MainUserControll.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
