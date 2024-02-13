@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -37,43 +39,27 @@ public partial class MainUserControll : UserControl
         {
             try
             {
-                if (SortComboBox != null && SortComboBox.SelectedIndex != 1)
+                var response = await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/fillbook");
+                if (response.IsSuccessStatusCode)
                 {
-                    var response = await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksOrderBy");
-                    if (response.IsSuccessStatusCode)
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    // Преобразование полученных данных в объекты класса BooksCard
+                    var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(jsonString);
+                    
+                    if (SortComboBox != null && SortComboBox.SelectedIndex != 1)
                     {
-                        var jsonString = await response.Content.ReadAsStringAsync();
-                        // Преобразование полученных данных в объекты класса BooksCard
-                        var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(jsonString);
-                        
-                        BooksListBox.ItemsSource = booksData;
+                        booksData = booksData.OrderBy(bookOrderBy => bookOrderBy.Title).ToList();
                     }
-                }
-                if (SortComboBox != null && SortComboBox.SelectedIndex != 0)
-                {
-                    var responsee =
-                        await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/BooksOrderByDescending");
-                    if (responsee.IsSuccessStatusCode)
+                    else if (SortComboBox != null && SortComboBox.SelectedIndex != 0)
                     {
-                        var jsonString = await responsee.Content.ReadAsStringAsync();
-                        // Преобразование полученных данных в объекты класса BooksCard
-                        var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(jsonString);
-                        
-                        BooksListBox.ItemsSource = booksData;
+                        booksData = booksData.OrderByDescending(bookOrderByDescending => bookOrderByDescending.Title).ToList();
                     }
-                }
-                if ( SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text)) // Проверка наличия текста для поиска
-                {
-                    var searchResponse = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/Search?searchTerm={Uri.EscapeDataString(SearchTextBox.Text)}");
-
-                    if (searchResponse.IsSuccessStatusCode)
+                    
+                    if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
                     {
-                        var searchJsonString = await searchResponse.Content.ReadAsStringAsync();
-                        var searchBooksData = JsonConvert.DeserializeObject<List<BooksCard>>(searchJsonString);
-
-                        // Привяжите объекты к свойству ItemsSource вашего ListBox
-                        BooksListBox.ItemsSource = searchBooksData;
+                        booksData = booksData.Where(book => book.Title.ToLower().Contains(SearchTextBox.Text)).ToList();
                     }
+                    BooksListBox.ItemsSource = booksData;
                 }
             }
             catch (Exception e)

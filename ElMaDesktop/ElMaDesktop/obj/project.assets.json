@@ -4692,19 +4692,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sofa\\.nuget\\packages\\": {}
+    "C:\\Users\\Petrusu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sofa\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
+      "projectUniqueName": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
       "projectName": "ElMaDesktop",
-      "projectPath": "C:\\Users\\Sofa\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
-      "packagesPath": "C:\\Users\\Sofa\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sofa\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\obj\\",
+      "projectPath": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
+      "packagesPath": "C:\\Users\\Petrusu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Sofa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Petrusu\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -4773,7 +4773,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
       }
     }
   }

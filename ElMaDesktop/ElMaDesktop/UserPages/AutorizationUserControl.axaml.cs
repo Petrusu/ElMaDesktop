@@ -19,6 +19,8 @@ public partial class AutorizationUserControl : UserControl
         InitializeComponent();
         LoginTextBox = this.Find<TextBox>("LoginTextBox");
         PasswordTextBox = this.Find<TextBox>("PasswordTextBox");
+        LoginTextBox.Text = "ElMaAdmin";
+        PasswordTextBox.Text = "Libr@ry_ElMa27668";
     }
 
     private async void AuthDtn_OnClick(object? sender, RoutedEventArgs e)

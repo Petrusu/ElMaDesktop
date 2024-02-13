@@ -3,6 +3,7 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="ElMaDesktop/App.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
         <entry key="ElMaDesktop/Classes/AddEditUserControll.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
         <entry key="ElMaDesktop/MainWindow.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />
         <entry key="ElMaDesktop/UserPages/AddEditUserControll.axaml" value="ElMaDesktop/ElMaDesktop.csproj" />

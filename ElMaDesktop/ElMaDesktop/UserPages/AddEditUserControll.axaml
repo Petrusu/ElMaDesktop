@@ -56,17 +56,26 @@
                 <TextBox Watermark="Место публикации" x:Name="PlaceOfPublication" Height="70" FontSize="40"/> 
                 <TextBox Watermark="Дата публикации" x:Name="YearOfPublication" Height="70" FontSize="40"/> 
                 <TextBox Watermark="BBK" x:Name="BBK" Height="70" FontSize="40"/>
+                 <TextBox Watermark="Аннотация" x:Name="Annotation" FontSize="40"
+                          VerticalContentAlignment="Top"
+                          CornerRadius="30"/>
                 <Button Content="Сохранить" HorizontalAlignment="Center" x:Name="Save1Btn"
                         Click="Save1Btn_OnClick"
-                        IsVisible="False"/>
-                <Button Content="Сохранить" HorizontalAlignment="Center" IsVisible="False"
+                        IsVisible="True"/>
+                <Button Content="Сохранить" HorizontalAlignment="Center" IsVisible="True"
                         x:Name="Save2Btn" Click="Save2Btn_OnClick"/>
             </StackPanel>
         </StackPanel>
-        <TextBox Grid.Column="2" Grid.Row="1"
-                 Watermark="Аннотация" x:Name="Annotation" FontSize="40"
-                VerticalContentAlignment="Top"
-                 CornerRadius="30"/>
+        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center">
+           <ListBox Name="ThemesListBox" Background="White">
+               <Grid ColumnDefinitions="*,*">
+                   <TextBox Grid.Column="0" Name="Theme" Width="400"/>
+                   <Button Grid.Column="1" Content="-" Width="100"/>
+               </Grid>
+           </ListBox> 
+            <Button Content="Добавить тему" />
+        </StackPanel>
+        
         <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom"
                     HorizontalAlignment="Center">
             <Image Source="{Binding Image}" Width="200"/>

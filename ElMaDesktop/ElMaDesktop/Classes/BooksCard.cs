@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using Avalonia.Media.Imaging;
@@ -21,8 +22,10 @@ public class BooksCard
     public string? PlaceOfPublication { get; set; }
 
     public string YearOfPublication { get; set; }
+    public string Bbkcode { get; set; }
     public string? Author { get; set; }
     public string? Editor { get; set; }
+    public ObservableCollection<string> Themes { get; set; } = new ObservableCollection<string>();
 
     public byte[]? Image { get; set; }
     public Avalonia.Media.Imaging.Bitmap? ImageBook

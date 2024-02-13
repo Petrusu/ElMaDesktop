@@ -9,19 +9,40 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ElMaDesktop.Classes;
 
 public partial class AddEditUserControll : UserControl
 {
+    private BooksCard booksCard;
     public AddEditUserControll()
     {
         InitializeComponent();
+        Title = this.Find<TextBox>("Title");
+        SeriesName = this.Find<TextBox>("SeriesName");
+        Author = this.Find<TextBox>("Author");
+        Editor = this.Find<TextBox>("Editor");
+        Publisher = this.Find<TextBox>("Publisher");
+        PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
+        YearOfPublication = this.Find<TextBox>("YearOfPublication");
+        BBK = this.Find<TextBox>("BBK");
+        ThemesListBox = this.Find<ListBox>("ThemesListBox");
     }
     public AddEditUserControll(int id)
     {
         InitializeComponent();
+        InitializeComponent();
+        Title = this.Find<TextBox>("Title");
+        SeriesName = this.Find<TextBox>("SeriesName");
+        Author = this.Find<TextBox>("Author");
+        Editor = this.Find<TextBox>("Editor");
+        Publisher = this.Find<TextBox>("Publisher");
+        PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
+        YearOfPublication = this.Find<TextBox>("YearOfPublication");
+        BBK = this.Find<TextBox>("BBK");
+        ThemesListBox = this.Find<ListBox>("ThemesListBox");
     }
 
     private void Save2Btn_OnClick(object? sender, RoutedEventArgs e)
@@ -31,7 +52,7 @@ public partial class AddEditUserControll : UserControl
 
     private void Save1Btn_OnClick(object? sender, RoutedEventArgs e)
     {
-        BooksCard booksCard = new BooksCard
+        booksCard = new BooksCard
         {
             Title = Title.Text,
             SeriesName = SeriesName.Text,
@@ -41,8 +62,13 @@ public partial class AddEditUserControll : UserControl
             PlaceOfPublication = PlaceOfPublication.Text,
             YearOfPublication = YearOfPublication.Text,
             Annotation = Annotation.Text,
-
         };
+    
+        // Добавление каждого объекта Themes из ThemesListBox
+        foreach (Themes theme in ThemesListBox.Items)
+        {
+            booksCard.Themes.Add(theme.Theme);
+        }
         AddNewBook(booksCard);
     }
 
@@ -52,13 +78,10 @@ public partial class AddEditUserControll : UserControl
     }
     private async void AddNewBook(BooksCard bookRequest)
     {
-        // Пример использования HttpClient:
         using (HttpClient client = new HttpClient())
         {
-            // Преобразование объекта в JSON
             string jsonRequest = JsonConvert.SerializeObject(bookRequest);
-
-            // Определение адреса сервера, например:
+        
             string serverUrl = "http://localhost:5163/api/ForAdmin/AddNewBook";
 
             // Отправка POST-запроса
@@ -85,5 +108,23 @@ public partial class AddEditUserControll : UserControl
             }
         }
     }
-    
+
+    private void AddThemeButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        // Получение текущего элемента из контекста данных ListBox
+        if (sender is Control control)
+        {
+            if (control.DataContext is Themes currentTheme)
+            {
+                // Проверка на null и добавление темы
+                if (!string.IsNullOrWhiteSpace(currentTheme.Theme))
+                {
+                    booksCard.Themes.Add(currentTheme.Theme);
+                
+                    // Очистка текста темы после добавления
+                    currentTheme.Theme = string.Empty;
+                }
+            }
+        }
+    }
 }
