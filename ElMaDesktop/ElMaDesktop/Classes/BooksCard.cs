@@ -25,7 +25,7 @@ public class BooksCard
     public string Bbkcode { get; set; }
     public string? Author { get; set; }
     public string? Editor { get; set; }
-    public ObservableCollection<string> Themes { get; set; } = new ObservableCollection<string>();
+    public List<int> ThemeIds { get; set; } = new List<int>();
 
     public byte[]? Image { get; set; }
     public Avalonia.Media.Imaging.Bitmap? ImageBook

@@ -11,7 +11,9 @@
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Width" Value="800"/>
+            <Setter Property="Height" Value="55"/>
             <Setter Property="Foreground" Value="#5B75BC"/>
+            <Setter Property="FontSize" Value="40"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style Selector="Button">
@@ -19,8 +21,8 @@
             <Setter Property="Background" Value="#1A3FA3"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Width" Value="300"/>
-            <Setter Property="Height" Value="80"/>
-            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="30"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#EEF2FF"/>
@@ -39,7 +41,7 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
-    <Grid ColumnDefinitions="50,*,*,50" RowDefinitions="*,3*,3*,50" ShowGridLines="True">
+    <Grid ColumnDefinitions="50,*,*,50" RowDefinitions="*,*,3*,*,3*,50">
         <StackPanel Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"
                     Background="#4E7CF9" Orientation="Horizontal">
             <StackPanel Orientation="Horizontal">
@@ -48,43 +50,54 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="1" Orientation="Horizontal">
             <StackPanel>
-                <TextBox Watermark="Название" x:Name="Title" Height="70" FontSize="40"/>
-                <TextBox Watermark="Название серии" x:Name="SeriesName" Height="70" FontSize="40"/>
-                <TextBox Watermark="Автор" x:Name="Author" Height="70" FontSize="40"/>
-                <TextBox Watermark="Редактор" x:Name="Editor" Height="70" FontSize="40"/>  
-                <TextBox Watermark="Издатель" x:Name="Publisher" Height="70" FontSize="40"/> 
-                <TextBox Watermark="Место публикации" x:Name="PlaceOfPublication" Height="70" FontSize="40"/> 
-                <TextBox Watermark="Дата публикации" x:Name="YearOfPublication" Height="70" FontSize="40"/> 
-                <TextBox Watermark="BBK" x:Name="BBK" Height="70" FontSize="40"/>
-                 <TextBox Watermark="Аннотация" x:Name="Annotation" FontSize="40"
+                <TextBox Watermark="Название" x:Name="Title"/>
+                <TextBox Watermark="Название серии" x:Name="SeriesName"/>
+                <TextBox Watermark="Автор" x:Name="Author"/>
+                <TextBox Watermark="Редактор" x:Name="Editor"/>  
+                <TextBox Watermark="Издатель" x:Name="Publisher"/> 
+                <TextBox Watermark="Место публикации" x:Name="PlaceOfPublication"/> 
+                <TextBox Watermark="Дата публикации" x:Name="YearOfPublication"/> 
+                <TextBox Watermark="BBK" x:Name="BBK"/>
+                 <TextBox Watermark="Аннотация" x:Name="Annotation"
                           VerticalContentAlignment="Top"
+                          TextWrapping="Wrap"
+                          Height="150"
                           CornerRadius="30"/>
                 <Button Content="Сохранить" HorizontalAlignment="Center" x:Name="Save1Btn"
                         Click="Save1Btn_OnClick"
                         IsVisible="True"/>
-                <Button Content="Сохранить" HorizontalAlignment="Center" IsVisible="True"
+                <Button Content="Сохранить" HorizontalAlignment="Center" IsVisible="False"
                         x:Name="Save2Btn" Click="Save2Btn_OnClick"/>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center">
-           <ListBox Name="ThemesListBox" Background="White">
-               <Grid ColumnDefinitions="*,*">
-                   <TextBox Grid.Column="0" Name="Theme" Width="400"/>
-                   <Button Grid.Column="1" Content="-" Width="100"/>
-               </Grid>
-           </ListBox> 
-            <Button Content="Добавить тему" />
+        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox Watermark="Найти тему..." x:Name="SearchThemeBox" PropertyChanged="SearchThemeBox_OnPropertyChanged"/>
         </StackPanel>
-        
-        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom"
-                    HorizontalAlignment="Center">
-            <Image Source="{Binding Image}" Width="200"/>
+        <ListBox Grid.Column="2" Grid.Row="2" x:Name="ThemesListBox" Background="#EEF2FF">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton x:Name="ThemeRadioButton" Tag="{Binding ThemesId}" IsChecked="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
+                                 Checked="ThemeRadioButton_Checked">
+                        <RadioButton.Content>
+                            <TextBlock Text="{Binding Themesname}" FontSize="20"/>
+                        </RadioButton.Content>
+                    </RadioButton>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox x:Name="AddThemeTextBox" Watermark="Добавить тему" Width="550"/>
+            <Button x:Name="AddThemeBtn" Content="Добавить" Click="AddThemeBtn_OnClick"/>
         </StackPanel>
-        <Button Grid.Column="2" Grid.Row="2" x:Name="ImageSaveBtn"
+        <StackPanel Grid.Column="2" Grid.Row="4" VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch" Background="#EEF2FF">
+            <Image x:Name="ImageBook" Source="{Binding Image}" Width="150" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Button Grid.Column="2" Grid.Row="4" x:Name="ImageSaveBtn"
                 VerticalAlignment="Bottom" HorizontalAlignment="Center"
                 Click="ImageSaveBtn_OnClick">
             <Button.Content>
-                <TextBlock Text="Добавить изображение" TextWrapping="Wrap" Foreground="#EEF2FF"/>
+                <TextBlock Text="Добавить изображение" FontSize="20" TextWrapping="Wrap" Foreground="#EEF2FF"/>
             </Button.Content>
         </Button>
     </Grid>

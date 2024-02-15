@@ -2,5 +2,6 @@
 
 public class Themes
 {
-    public string Theme { get; set; }
+    public int ThemesId { get; set; }
+    public string Themesname { get; set; }
 }

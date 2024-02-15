@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Avalonia;
@@ -11,12 +12,20 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 
 namespace ElMaDesktop.Classes;
 
 public partial class AddEditUserControll : UserControl
 {
     private BooksCard booksCard;
+    byte[] imageBytes;
+    private List<int> selectedThemeIds = new List<int>();
+    private int selectedThemeId = -1; 
+
+    
     public AddEditUserControll()
     {
         InitializeComponent();
@@ -29,6 +38,9 @@ public partial class AddEditUserControll : UserControl
         YearOfPublication = this.Find<TextBox>("YearOfPublication");
         BBK = this.Find<TextBox>("BBK");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
+        SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
+        AddThemeTextBox = this.Find<TextBox>("AddThemeTextBox");
+        LoadThemes();
     }
     public AddEditUserControll(int id)
     {
@@ -41,8 +53,11 @@ public partial class AddEditUserControll : UserControl
         Publisher = this.Find<TextBox>("Publisher");
         PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
         YearOfPublication = this.Find<TextBox>("YearOfPublication");
-        BBK = this.Find<TextBox>("BBK");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
+        SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
+        AddThemeTextBox = this.Find<TextBox>("AddThemeTextBox");
+        BBK = this.Find<TextBox>("BBK");
+        LoadThemes();
     }
 
     private void Save2Btn_OnClick(object? sender, RoutedEventArgs e)
@@ -62,19 +77,57 @@ public partial class AddEditUserControll : UserControl
             PlaceOfPublication = PlaceOfPublication.Text,
             YearOfPublication = YearOfPublication.Text,
             Annotation = Annotation.Text,
+            Image = imageBytes
+            
         };
-    
-        // Добавление каждого объекта Themes из ThemesListBox
-        foreach (Themes theme in ThemesListBox.Items)
+        if (selectedThemeIds.Count > 0)
         {
-            booksCard.Themes.Add(theme.Theme);
+            booksCard.ThemeIds = selectedThemeIds;
         }
         AddNewBook(booksCard);
     }
 
-    private void ImageSaveBtn_OnClick(object? sender, RoutedEventArgs e)
+    private async void ImageSaveBtn_OnClick(object? sender, RoutedEventArgs e)
     {
-       
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filters.Add(new FileDialogFilter() { Name = "Images", Extensions = { "jpg", "jpeg", "png" } });
+        
+        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var window = desktop.MainWindow;
+            var selectedFiles = await openFileDialog.ShowAsync(window);
+            if (selectedFiles != null && selectedFiles.Length > 0)
+            {
+                string selectedImagePath = selectedFiles[0];
+                try
+                {
+                    using (var stream = File.OpenRead(selectedImagePath))
+                    {
+                        var bitmap = new Bitmap(stream);
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            ImageBook.Source = bitmap;
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var box = MessageBoxManager
+                        .GetMessageBoxStandard("Ошибка", $"Ошибка:{ex}",
+                            ButtonEnum.Ok);
+
+                    var result = await box.ShowAsync();
+                }
+            }
+        }
+
+        // Преобразование изображения в массив байтов
+        using (MemoryStream ms = new MemoryStream())
+        {
+            var bitmap = (Bitmap)ImageBook.Source; // Получаем изображение из ImageBook
+            bitmap.Save(ms);
+            imageBytes = ms.ToArray();
+        }
     }
     private async void AddNewBook(BooksCard bookRequest)
     {
@@ -101,30 +154,100 @@ public partial class AddEditUserControll : UserControl
             {
                 // Произошла ошибка при добавлении книги
                 var box = MessageBoxManager
-                    .GetMessageBoxStandard("Ошибка", $"Ошибка:{response.IsSuccessStatusCode}",
+                    .GetMessageBoxStandard("Ошибка", $"Ошибка:{response}",
                         ButtonEnum.Ok);
 
                 var result = await box.ShowAsync();
             }
         }
     }
-
-    private void AddThemeButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        // Получение текущего элемента из контекста данных ListBox
-        if (sender is Control control)
+     private async void LoadThemes()
         {
-            if (control.DataContext is Themes currentTheme)
+            using (HttpClient client = new HttpClient())
             {
-                // Проверка на null и добавление темы
-                if (!string.IsNullOrWhiteSpace(currentTheme.Theme))
+                try
                 {
-                    booksCard.Themes.Add(currentTheme.Theme);
-                
-                    // Очистка текста темы после добавления
-                    currentTheme.Theme = string.Empty;
+                    var response = await client.GetAsync("http://localhost:5163/api/ForAllUsers/fillthemes");
+                    response.EnsureSuccessStatusCode(); // Генерирует исключение в случае ошибки
+    
+                    var themesJson = await response.Content.ReadAsStringAsync();
+                    var themes = JsonConvert.DeserializeObject<List<Themes>>(themesJson);
+                    if (SearchThemeBox != null && !string.IsNullOrEmpty(SearchThemeBox.Text))
+                    {
+                        themes = themes.Where(t => t.Themesname.ToLower().Contains(SearchThemeBox.Text))
+                            .ToList();
+                    }
+                    ThemesListBox.ItemsSource = themes;
+                }
+                catch (HttpRequestException ex)
+                {
+                    return;
                 }
             }
         }
-    }
+
+        private async void AddThemeBtn_OnClick(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+                string theme = AddThemeTextBox.Text; 
+
+  
+                string json = JsonConvert.SerializeObject(new { theme });
+
+                // Создание HttpClient
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:5163/api/ForAdmin/AddTheme"); 
+
+                    // Отправка POST-запроса
+                    HttpResponseMessage response = await client.PostAsync("AddTheme", new StringContent(json, Encoding.UTF8, "application/json"));
+
+                    // Проверка успешности запроса
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        var box = MessageBoxManager
+                            .GetMessageBoxStandard("Готово", $"Тема добавлена",
+                                ButtonEnum.Ok);
+
+                        var result = await box.ShowAsync();
+                        AddThemeTextBox.Clear();
+                        LoadThemes();
+                    }
+                    else
+                    {
+                        var box = MessageBoxManager
+                            .GetMessageBoxStandard("Ошибка", $"Ошибка:{response}",
+                                ButtonEnum.Ok);
+
+                        var result = await box.ShowAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var box = MessageBoxManager
+                    .GetMessageBoxStandard("Ошибка", $"Ошибка:{ex}",
+                        ButtonEnum.Ok);
+
+                var result = await box.ShowAsync();
+            }           
+        }
+        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton radioButton && radioButton.IsChecked == true)
+            {
+                if (radioButton.Tag is int themeId)
+                {
+                    selectedThemeId = themeId;
+                }
+            }
+        }
+
+        private void SearchThemeBox_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            LoadThemes();
+        }
 }
