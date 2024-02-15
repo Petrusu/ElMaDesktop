@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k8jOEkVAK5aMNvfI5gDKBt7x5nyGKN6X2DvKpvbPtNxjvTzqDjgtWzYSyDfrcBGXdudaPQu3WcJzQALuSqO+dw==",
+  "dgSpecHash": "XdCIDJVU+TlKsuI3oCdUAZa3/Xkk1j1BzM54SunhJQuV2xeXW9zLLIlbuy0eETWKw+wRpCRf33Y3TUcqlAhXwA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
+  "projectFilePath": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Petrusu\\.nuget\\packages\\avalonia\\11.0.6\\avalonia.11.0.6.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2023020321\\avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",

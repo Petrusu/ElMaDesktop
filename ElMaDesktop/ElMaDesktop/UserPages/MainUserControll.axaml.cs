@@ -57,7 +57,18 @@ public partial class MainUserControll : UserControl
                     
                     if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
                     {
-                        booksData = booksData.Where(book => book.Title.ToLower().Contains(SearchTextBox.Text)).ToList();
+                        string searchText = SearchTextBox.Text.ToLower();
+                        booksData = booksData.Where(book => 
+                            book.Title.ToLower().Contains(searchText) || 
+                            (book.Authors != null && book.Authors.Any(author => author.ToLower().Contains(searchText))) ||
+                            (book.Editors != null && book.Editors.Any(editor => editor.ToLower().Contains(searchText)))
+                        ).ToList();
+                    }
+
+                    else if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
+                    {
+                        booksData = booksData.Where(book => book.Author.ToLower().Contains(SearchTextBox.Text))
+                            .ToList();
                     }
                     BooksListBox.ItemsSource = booksData;
                 }
