@@ -410,3 +410,5 @@ C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.csproj.CopyComplete
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.genruntimeconfig.cache
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ref\ElMaDesktop.dll
+C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll

@@ -20,7 +20,7 @@ namespace ElMaDesktop.Classes;
 
 public partial class AddEditUserControll : UserControl
 {
-    private BooksCard booksCard;
+    private BookRequest booksCard;
     byte[] imageBytes;
     private List<int> selectedThemeIds = new List<int>();
     private int selectedThemeId = -1; 
@@ -67,22 +67,22 @@ public partial class AddEditUserControll : UserControl
 
     private void Save1Btn_OnClick(object? sender, RoutedEventArgs e)
     {
-        booksCard = new BooksCard
+        booksCard = new BookRequest
         {
             Title = Title.Text,
             SeriesName = SeriesName.Text,
-            Author = Author.Text,
+            AuthorBook = Author.Text,
             Editor = Editor.Text,
             Publisher = Publisher.Text,
             PlaceOfPublication = PlaceOfPublication.Text,
-            YearOfPublication = YearOfPublication.Text,
+            YearOfPublication = DateOnly.Parse(YearOfPublication.Text),
             Annotation = Annotation.Text,
-            Image = imageBytes
-            
+            //Image = imageBytes, !warning
+            BBK = BBK.Text
         };
         if (selectedThemeIds.Count > 0)
         {
-            booksCard.ThemeIds = selectedThemeIds;
+            booksCard.Themes = selectedThemeIds;
         }
         AddNewBook(booksCard);
     }
@@ -129,11 +129,11 @@ public partial class AddEditUserControll : UserControl
             imageBytes = ms.ToArray();
         }
     }
-    private async void AddNewBook(BooksCard bookRequest)
+    private async void AddNewBook(BookRequest bookRequest)
     {
         using (HttpClient client = new HttpClient())
         {
-            string jsonRequest = JsonConvert.SerializeObject(bookRequest);
+            string jsonRequest = System.Text.Json.JsonSerializer.Serialize(bookRequest);
         
             string serverUrl = "http://localhost:5163/api/ForAdmin/AddNewBook";
 
@@ -237,12 +237,10 @@ public partial class AddEditUserControll : UserControl
         }
         private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (sender is RadioButton radioButton && radioButton.IsChecked == true)
+            var radioBtn = (sender as RadioButton);
+            if (radioBtn.IsChecked == true)
             {
-                if (radioButton.Tag is int themeId)
-                {
-                    selectedThemeId = themeId;
-                }
+                selectedThemeIds.Add(int.Parse(radioBtn.Tag.ToString()));
             }
         }
 

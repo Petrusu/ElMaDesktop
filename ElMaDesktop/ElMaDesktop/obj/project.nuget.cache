@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XdCIDJVU+TlKsuI3oCdUAZa3/Xkk1j1BzM54SunhJQuV2xeXW9zLLIlbuy0eETWKw+wRpCRf33Y3TUcqlAhXwA==",
+  "dgSpecHash": "TpRkRKYN+x0pbCQu89Kp203CSeH3dpgrd025783IS+BSgiIp5zJ3nDVIFgYgTTv6kXpQD2BgnLZ7P0xYAPs27Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\Petrusu\\Desktop\\diplom\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop\\ElMaDesktop.csproj",
   "expectedPackageFiles": [
@@ -30,12 +30,14 @@
     "C:\\Users\\Petrusu\\.nuget\\packages\\markdown.avalonia.tight\\11.0.2\\markdown.avalonia.tight.11.0.2.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\messagebox.avalonia\\3.1.5.1\\messagebox.avalonia.3.1.5.1.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microcom.runtime\\0.11.0\\microcom.runtime.0.11.0.nupkg.sha512",
+    "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.0.0\\microsoft.codeanalysis.analyzers.3.0.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.codeanalysis.common\\3.8.0\\microsoft.codeanalysis.common.3.8.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.codeanalysis.csharp\\3.8.0\\microsoft.codeanalysis.csharp.3.8.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.codeanalysis.csharp.scripting\\3.8.0\\microsoft.codeanalysis.csharp.scripting.3.8.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.codeanalysis.scripting.common\\3.8.0\\microsoft.codeanalysis.scripting.common.3.8.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
+    "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Petrusu\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
