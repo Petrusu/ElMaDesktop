@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ElMaDesktop.Classes;
@@ -100,13 +101,6 @@ public partial class MainUserControll : UserControl
         LoadListBox();
     }
 
-    private void EditBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var Id = (sender as Button).Tag.ToString();
-        AddEditUserControll editUserControll = new AddEditUserControll(Convert.ToUInt16(Id));
-        NavigationManager.NavigateTo(editUserControll);
-    }
-
     private async void DeliteBtn_OnClick(object? sender, RoutedEventArgs e)
     {
         try
@@ -118,10 +112,10 @@ public partial class MainUserControll : UserControl
             using (HttpClient client = new HttpClient())
             {
                 // Задание URL для удаления книги
-                string apiUrl = "http://localhost:5163/api/ForAdmin/DeleteBook?bookId=" + Id;
+                string apiUrl = $"http://localhost:5163/api/ForAdmin/DeleteBook?bookId={Id}";
 
                 // Отправка DELETE-запроса на сервер
-                HttpResponseMessage response = await client.DeleteAsync(apiUrl);
+                HttpResponseMessage response = await client.PostAsync(apiUrl, null);
 
                 // Проверка успешности операции
                 if (response.IsSuccessStatusCode)
@@ -150,5 +144,59 @@ public partial class MainUserControll : UserControl
 
             var result = await box.ShowAsync();
         }
+
+        LoadListBox();
     }
+
+    private async void BooksListBox_OnSelectionChanged(object? sender, TappedEventArgs tappedEventArgs)
+    {
+        
+        var selectedBook = ((sender as ListBox).SelectedItem as BooksCard);
+        if (selectedBook == null)
+        {
+            return;
+        }
+        BookRequest book = new BookRequest();
+        using (var httpClient = new HttpClient())
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/getinformationaboutbook?bookId={selectedBook.BookId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    // Преобразование полученных данных в объекты класса BooksCard
+                    book = System.Text.Json.JsonSerializer.Deserialize<BookRequest>(jsonString);
+                }
+            }
+            catch (Exception ex)
+            {
+                var box = MessageBoxManager
+                    .GetMessageBoxStandard("Ошибка", $"Ошибка: {ex}",
+                        ButtonEnum.Ok);
+
+                var result = await box.ShowAsync();
+            }
+        }
+        BookRequest br = new BookRequest()
+        {
+            Title = book.Title,
+            Annotation = book.Annotation,
+            AuthorBook = book.AuthorBook,
+            SeriesName = book.SeriesName,
+            Publisher = book.Publisher,
+            PlaceOfPublication = book.PlaceOfPublication,
+            YearOfPublication = book.YearOfPublication,
+            BBK= book.BBK,
+            Editor = book.Editor,
+            Id = book.Id,
+            Image = book.Image,
+            Themes = book.Themes,
+            ImageName = book.ImageName
+        };
+        AddEditUserControll editUserControll = new AddEditUserControll(br);
+        NavigationManager.NavigateTo(editUserControll);
+    }
+
+   
 }

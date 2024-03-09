@@ -66,8 +66,7 @@
                 <Button Content="Сохранить" HorizontalAlignment="Center" x:Name="Save1Btn"
                         Click="Save1Btn_OnClick"
                         IsVisible="True"/>
-                <Button Content="Сохранить" HorizontalAlignment="Center" IsVisible="False"
-                        x:Name="Save2Btn" Click="Save2Btn_OnClick"/>
+                <Button Content="Назад" HorizontalAlignment="Center" x:Name="BackBtn" Click="BackBtn_OnClick"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -76,12 +75,8 @@
         <ListBox Grid.Column="2" Grid.Row="2" x:Name="ThemesListBox" Background="#EEF2FF">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <RadioButton x:Name="ThemeRadioButton" Tag="{Binding ThemesId}" IsChecked="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
-                                 Checked="ThemeRadioButton_Checked">
-                        <RadioButton.Content>
-                            <TextBlock Text="{Binding Themesname}" FontSize="20"/>
-                        </RadioButton.Content>
-                    </RadioButton>
+                    <CheckBox x:Name="ThemeRadioButton" Tag="{Binding ThemesId}" IsChecked="{Binding IsActive}"
+                                 Checked="ThemeRadioButton_Checked" Content="{Binding Themesname}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

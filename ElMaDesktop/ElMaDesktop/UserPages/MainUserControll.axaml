@@ -68,7 +68,7 @@
                 <Button Content="Добавить" HorizontalAlignment="Center" x:Name="AddBtn" Click="AddBtn_OnClick"/>
             </StackPanel>
         </StackPanel>
-        <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox">
+        <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox"  Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnDefinitions="*,*,*">
@@ -78,7 +78,7 @@
                         </StackPanel>
                         <StackPanel Grid.Column="1" HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Bbkcode}"/>
+                            <TextBlock Text="{Binding BBK}"/>
                             <TextBlock Text="{Binding Title}"
                                        TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding SeriesName}"
@@ -91,12 +91,9 @@
                         </StackPanel>
                         <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
-                            <Button Content="Редактировать" x:Name="EditBtn"
-                                    Click="EditBtn_OnClick"
-                                    Tag="{Binding Id}"/>
                             <Button Content="Удалить" x:Name="DeliteBtn"
                                     Click="DeliteBtn_OnClick"
-                                    Tag="{Binding Id}"/>
+                                    Tag="{Binding BookId}"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

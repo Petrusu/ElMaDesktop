@@ -22,7 +22,7 @@ public class BooksCard
     public string? PlaceOfPublication { get; set; }
 
     public string YearOfPublication { get; set; }
-    public string Bbkcode { get; set; }
+    public string BBK { get; set; }
     public string? Author { get; set; }
     public string? Editor { get; set; }
     public List<int> ThemeIds { get; set; } = new List<int>();
