@@ -28,29 +28,10 @@ public class BooksCard
     public List<int> ThemeIds { get; set; } = new List<int>();
 
     public byte[]? Image { get; set; }
-    public Avalonia.Media.Imaging.Bitmap? ImageBook
-    {
-        get
-        {
-            if (Image == null || Image.Length == 0)
-                return null;
-
-            using (var stream = new MemoryStream(Image))
-            {
-                return new Avalonia.Media.Imaging.Bitmap(stream);
-            }
-        }
-    }
+    public string ImageName { get; set; }
+    public Bitmap? ImageBook { get; set; }
     public List<string> Authors { get; set; } = new List<string>();
     public List<string> Editors { get; set; } = new List<string>();
-}
-
-public class Author
-{
     public string Authorsname { get; set; } = null!;
-}
-
-public class Editor
-{
     public string Editorname { get; set; } = null!;
 }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="ElMaDesktop.Classes.AddEditUserControll"
-             FontFamily="Trebuchet MS">
+             FontFamily="Century Gothic">
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="CornerRadius" Value="100"/>
@@ -13,7 +13,7 @@
             <Setter Property="Width" Value="800"/>
             <Setter Property="Height" Value="55"/>
             <Setter Property="Foreground" Value="#5B75BC"/>
-            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontSize" Value="25"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style Selector="Button">
@@ -37,7 +37,7 @@
         </Style>
         <Style Selector="TextBlock">
             <Setter Property="Foreground" Value="#5B75BC"/>
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>

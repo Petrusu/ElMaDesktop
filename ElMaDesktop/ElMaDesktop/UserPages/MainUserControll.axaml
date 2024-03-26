@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="ElMaDesktop.UserPages.MainUserControll"
-             FontFamily="Trebuchet MS">
+             FontFamily="Century Gothic">
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="CornerRadius" Value="100"/>
@@ -38,7 +38,6 @@
         <Style Selector="TextBlock">
             <Setter Property="Foreground" Value="#5B75BC"/>
             <Setter Property="FontSize" Value="30"/>
-            <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
     <Grid ColumnDefinitions="50,*,50" RowDefinitions="*,5*,50">
@@ -76,7 +75,7 @@
                                     VerticalAlignment="Center">
                             <Image Source="{Binding ImageBook}" Width="200"/>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Left"
                                     VerticalAlignment="Center">
                             <TextBlock Text="{Binding BBK}"/>
                             <TextBlock Text="{Binding Title}"
@@ -86,8 +85,8 @@
                             <TextBlock Text="{Binding Publisher}"/>
                             <TextBlock Text="{Binding PlaceOfPublication}"/>
                             <TextBlock Text="{Binding YearOfPublication}"/>
-                            <TextBlock Text="{Binding Authors[0]}" />
-                            <TextBlock Text="{Binding Editors[0]}" />
+                            <TextBlock Text="{Binding Authorsname}" />
+                            <TextBlock Text="{Binding Editorname}" />
                         </StackPanel>
                         <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                                     VerticalAlignment="Center">

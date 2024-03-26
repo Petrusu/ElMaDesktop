@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -10,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
 using ElMaDesktop.Classes;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -71,7 +73,57 @@ public partial class MainUserControll : UserControl
                         booksData = booksData.Where(book => book.Author.ToLower().Contains(SearchTextBox.Text))
                             .ToList();
                     }
-                    BooksListBox.ItemsSource = booksData;
+
+                    List<BooksCard> booksCards = new List<BooksCard>();
+                    
+                    foreach (var book in booksData)
+                    {
+                        BooksCard booksCard = new BooksCard();
+
+                        booksCard.BookId = book.BookId;
+                        if (book.Image != null)
+                        {
+                            using (MemoryStream stream = new MemoryStream(book.Image))
+                            {
+                                Bitmap bitmap = new Bitmap(stream);
+                                booksCard.ImageBook = bitmap;
+                            }
+                        }
+                        else
+                        {
+                            string file = Path.Combine(Directory.GetCurrentDirectory(), "Images").Replace("bin\\Debig\\net7.0", "");
+                            try
+                            {
+                                Bitmap bitmap = new Bitmap(Path.Combine(file, "picture.png"));
+                                booksCard.ImageBook = bitmap;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                                throw;
+                            }
+                            booksCard.ImageBook = new Bitmap("picture.png");
+                        }
+                        booksCard.BBK = $"ББК: {book.BBK}";
+                        booksCard.Title = $"Название: {book.Title}";
+                        booksCard.SeriesName = $"Название серии: {book.SeriesName}";
+                        booksCard.Publisher = $"Издатель: {book.Publisher}";
+                        booksCard.PlaceOfPublication = $"Место публикации: {book.PlaceOfPublication}";
+                        booksCard.YearOfPublication = $"Дата публикации: {book.YearOfPublication}";
+                        if (book.Authors.Count != 0)
+                        {
+                            booksCard.Authorsname = $"Автор: {string.Join(", ", book.Authors)}";
+                        }
+                        if (book.Editors.Count != 0)
+                        {
+                            booksCard.Editorname = $"Редактор: {string.Join(", ", book.Editors)}";
+                        }
+                        
+                        
+                        
+                        booksCards.Add(booksCard);
+                    }
+                    BooksListBox.ItemsSource = booksCards;
                 }
             }
             catch (Exception e)
