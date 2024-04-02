@@ -10,14 +10,14 @@
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="MinWidth" Value="200"/> <!-- Минимальная ширина -->
+            <Setter Property="Width" Value="300"/> <!-- Минимальная ширина -->
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style Selector="Button">
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#1A3FA3"/>
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -81,7 +81,7 @@
                 <TextBox Watermark="Аннотация" x:Name="Annotation"
                          VerticalContentAlignment="Top"
                          TextWrapping="Wrap"
-                         Height="150"
+                         Height="100"
                          CornerRadius="30"/>
                 <Button Content="Сохранить" HorizontalAlignment="Center" x:Name="Save1Btn"
                         Click="Save1Btn_OnClick"
