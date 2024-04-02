@@ -30,7 +30,6 @@ public partial class MainUserControll : UserControl
         InitializeComponent();
         SearchTextBox = this.Find<TextBox>("SearchTextBox");
         AddBtn = this.Find<Button>("AddBtn");
-        SortComboBox = this.Find<ComboBox>("SortComboBox");
         BooksListBox = this.Find<ListBox>("BooksListBox");
         LoadListBox();
     }
@@ -48,15 +47,6 @@ public partial class MainUserControll : UserControl
                     var jsonString = await response.Content.ReadAsStringAsync();
                     // Преобразование полученных данных в объекты класса BooksCard
                     var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(jsonString);
-                    
-                    if (SortComboBox != null && SortComboBox.SelectedIndex != 1)
-                    {
-                        booksData = booksData.OrderBy(bookOrderBy => bookOrderBy.Title).ToList();
-                    }
-                    else if (SortComboBox != null && SortComboBox.SelectedIndex != 0)
-                    {
-                        booksData = booksData.OrderByDescending(bookOrderByDescending => bookOrderByDescending.Title).ToList();
-                    }
                     
                     if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
                     {

@@ -7,93 +7,83 @@
              FontFamily="Century Gothic">
     <UserControl.Styles>
         <Style Selector="TextBox">
-            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="20"/>
-            <Setter Property="Width" Value="800"/>
-            <Setter Property="Height" Value="70"/>
+            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
             <Setter Property="FontSize" Value="40"/>
             <Setter Property="Foreground" Value="#5B75BC"/>
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
         <Style Selector="Button">
-            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Background" Value="#1A3FA3"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="Width" Value="300"/>
-            <Setter Property="Height" Value="80"/>
-            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
+            <Setter Property="FontSize" Value="25"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#EEF2FF"/>
         </Style>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#EEF2FF"/>
-            <Setter Property="Width" Value="300"/>
-            <Setter Property="Height" Value="70"/>
-            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
+            <Setter Property="MinHeight" Value="70"/> <!-- Минимальная высота -->
+            <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="40"/>
         </Style>
         <Style Selector="TextBlock">
             <Setter Property="Foreground" Value="#5B75BC"/>
             <Setter Property="FontSize" Value="30"/>
         </Style>
+        <Style Selector="ListBox">
+            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
+            <Setter Property="MinHeight" Value="200"/> <!-- Минимальная высота -->
+        </Style>
     </UserControl.Styles>
-    <Grid ColumnDefinitions="50,*,50" RowDefinitions="*,5*,50">
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
-                    Background="#4E7CF9" Orientation="Horizontal">
-            <StackPanel Orientation="Horizontal">
-                 <Image Source="../Images/logo.png" Width="200" VerticalAlignment="Center" Margin="30"/>
-            </StackPanel>
-           <StackPanel Orientation="Horizontal">
-               <TextBox x:Name="SearchTextBox" VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Watermark="  Поиск..."
-                        PropertyChanged="SearchTextBox_OnPropertyChanged"/>
-           </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="SortComboBox" 
-                          HorizontalAlignment="Center"
-                          SelectedIndex="0"
-                          SelectionChanged="SortComboBox_OnSelectionChanged">
-                    <ComboBox.Items>
-                        <TextBlock Text="А -> Я"/>
-                        <TextBlock Text="Я -> А"/>
-                    </ComboBox.Items>
-                </ComboBox>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Добавить" HorizontalAlignment="Center" x:Name="AddBtn" Click="AddBtn_OnClick"/>
-            </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Автоматическое масштабирование -->
+            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
+        </Grid.RowDefinitions>
+        
+        <!-- Панель с фильтрами -->
+        <StackPanel Grid.Row="0" Background="#4E7CF9" Orientation="Horizontal">
+            <Image Source="../Images/logo.png" Width="200" VerticalAlignment="Center" Margin="20"/> <!-- Фиксированный размер изображения -->
+            <TextBox x:Name="SearchTextBox" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                     Watermark="Поиск..." PropertyChanged="SearchTextBox_OnPropertyChanged"/>
+            <Button Content="Добавить" HorizontalAlignment="Stretch" x:Name="AddBtn" Margin="15"
+                    Click="AddBtn_OnClick"/>
         </StackPanel>
-        <ListBox Grid.Column="1" Grid.Row="1" x:Name="BooksListBox"  Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
+        
+        <!-- Список книг -->
+        <ListBox Grid.Row="1" x:Name="BooksListBox" Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid ColumnDefinitions="*,*,*">
-                        <StackPanel Grid.Column="0" HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <Image Source="{Binding ImageBook}" Width="200"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" HorizontalAlignment="Left"
-                                    VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/> <!-- Автоматическое масштабирование -->
+                            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
+                            <ColumnDefinition Width="Auto"/> <!-- Автоматическое масштабирование -->
+                        </Grid.ColumnDefinitions>
+                        
+                        <Image Grid.Column="0" Source="{Binding ImageBook}" Width="200" Margin="20"/> <!-- Фиксированный размер изображения -->
+                        
+                        <StackPanel Grid.Column="1" Margin="20">
                             <TextBlock Text="{Binding BBK}"/>
-                            <TextBlock Text="{Binding Title}"
-                                       TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding SeriesName}"
-                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding SeriesName}" TextWrapping="Wrap"/>
                             <TextBlock Text="{Binding Publisher}"/>
                             <TextBlock Text="{Binding PlaceOfPublication}"/>
                             <TextBlock Text="{Binding YearOfPublication}"/>
                             <TextBlock Text="{Binding Authorsname}" />
                             <TextBlock Text="{Binding Editorname}" />
                         </StackPanel>
-                        <StackPanel Grid.Column="2" HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <Button Content="Удалить" x:Name="DeliteBtn"
-                                    Click="DeliteBtn_OnClick"
-                                    Tag="{Binding BookId}"/>
-                        </StackPanel>
+                        
+                        <Button Grid.Column="2" Content="Удалить" x:Name="DeliteBtn" Margin="20"
+                                Click="DeliteBtn_OnClick" Tag="{Binding BookId}"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
