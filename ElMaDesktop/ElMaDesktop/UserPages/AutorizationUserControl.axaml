@@ -10,7 +10,7 @@
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="20"/>
-            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
+            <Setter Property="MinWidth" Value="300"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#1A3FA3"/>
@@ -18,7 +18,7 @@
         <Style Selector="Button">
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#1A3FA3"/>
-            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
+            <Setter Property="MinWidth" Value="300"/> 
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="#EEF2FF"/>
@@ -31,13 +31,13 @@
     </UserControl.Styles>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
-            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
+            <ColumnDefinition Width="*"/> 
+            <ColumnDefinition Width="*"/> 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
+            <RowDefinition Height="*"/> 
+            <RowDefinition Height="*"/> 
+            <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
                     Background="#4E7CF9"

@@ -10,15 +10,24 @@
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="Width" Value="300"/> <!-- Минимальная ширина -->
+            <Setter Property="Width" Value="300"/> 
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="CornerRadius" Value="30"/>
+            <Setter Property="Background" Value="#EEF2FF"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="300"/> 
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/> 
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
         <Style Selector="Button">
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Background" Value="#1A3FA3"/>
             <Setter Property="Margin" Value="5"/>
-            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
+            <Setter Property="MinWidth" Value="150"/> 
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -26,8 +35,8 @@
         </Style>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#EEF2FF"/>
-            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
-            <Setter Property="MinHeight" Value="50"/> <!-- Минимальная высота -->
+            <Setter Property="MinWidth" Value="150"/> 
+            <Setter Property="MinHeight" Value="50"/> 
             <Setter Property="CornerRadius" Value="30"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -39,28 +48,28 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
         <Style Selector="ListBox">
-            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
-            <Setter Property="MinHeight" Value="100"/> <!-- Минимальная высота -->
+            <Setter Property="MinWidth" Value="150"/> 
+            <Setter Property="MinHeight" Value="100"/> 
         </Style>
         <Style Selector="Image">
-            <Setter Property="Width" Value="150"/> <!-- Фиксированная ширина -->
+            <Setter Property="Width" Value="150"/> 
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/> <!-- Фиксированная ширина -->
-            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
-            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
-            <ColumnDefinition Width="50"/> <!-- Фиксированная ширина -->
+            <ColumnDefinition Width="50"/> 
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/> 
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="3*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="3*"/> <!-- Масштабирование оставшейся части -->
-            <RowDefinition Height="50"/> <!-- Фиксированная высота -->
+            <RowDefinition Height="*"/> 
+            <RowDefinition Height="*"/> 
+            <RowDefinition Height="3*"/> 
+            <RowDefinition Height="*"/> 
+            <RowDefinition Height="3*"/> 
+            <RowDefinition Height="50"/> 
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0"
                     Background="#4E7CF9" Orientation="Horizontal">
@@ -76,7 +85,7 @@
                 <TextBox Watermark="Редактор" x:Name="Editor"/>  
                 <TextBox Watermark="Издатель" x:Name="Publisher"/> 
                 <TextBox Watermark="Место публикации" x:Name="PlaceOfPublication"/> 
-                <TextBox Watermark="Дата публикации" x:Name="YearOfPublication"/> 
+                <CalendarDatePicker x:Name="YearOfPublication"/> 
                 <TextBox Watermark="BBK" x:Name="BBK"/>
                 <TextBox Watermark="Аннотация" x:Name="Annotation"
                          VerticalContentAlignment="Top"

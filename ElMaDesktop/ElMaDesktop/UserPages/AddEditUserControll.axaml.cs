@@ -40,7 +40,7 @@ public partial class AddEditUserControll : UserControl
         Editor = this.Find<TextBox>("Editor");
         Publisher = this.Find<TextBox>("Publisher");
         PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
-        YearOfPublication = this.Find<TextBox>("YearOfPublication");
+        YearOfPublication = this.Find<CalendarDatePicker>("YearOfPublication");
         BBK = this.Find<TextBox>("BBK");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
         SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
@@ -57,7 +57,7 @@ public partial class AddEditUserControll : UserControl
         Editor = this.Find<TextBox>("Editor");
         Publisher = this.Find<TextBox>("Publisher");
         PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
-        YearOfPublication = this.Find<TextBox>("YearOfPublication");
+        YearOfPublication = this.Find<CalendarDatePicker>("YearOfPublication");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
         SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
         AddThemeTextBox = this.Find<TextBox>("AddThemeTextBox");
@@ -78,7 +78,7 @@ public partial class AddEditUserControll : UserControl
         SeriesName.Text = book.SeriesName;
         BBK.Text = book.BBK;
         PlaceOfPublication.Text = book.PlaceOfPublication;
-        YearOfPublication.Text = book.YearOfPublication.ToString();
+        YearOfPublication.SelectedDate = DateTime.Parse(book.YearOfPublication.ToString());
         imageName = book.ImageName;
         imageBytes = book.Image;
         var file = Path.Combine(Directory.GetCurrentDirectory(), "Images").Replace("\\bin\\Debug\\net7.0", "");

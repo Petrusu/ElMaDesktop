@@ -10,7 +10,7 @@
             <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="Margin" Value="20"/>
-            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
+            <Setter Property="MinWidth" Value="300"/> 
             <Setter Property="FontSize" Value="40"/>
             <Setter Property="Foreground" Value="#5B75BC"/>
             <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -19,7 +19,7 @@
             <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Background" Value="#1A3FA3"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
+            <Setter Property="MinWidth" Value="150"/> 
             <Setter Property="FontSize" Value="25"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -27,8 +27,8 @@
         </Style>
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="#EEF2FF"/>
-            <Setter Property="MinWidth" Value="150"/> <!-- Минимальная ширина -->
-            <Setter Property="MinHeight" Value="70"/> <!-- Минимальная высота -->
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="MinHeight" Value="70"/> 
             <Setter Property="CornerRadius" Value="50"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -39,19 +39,19 @@
             <Setter Property="FontSize" Value="30"/>
         </Style>
         <Style Selector="ListBox">
-            <Setter Property="MinWidth" Value="300"/> <!-- Минимальная ширина -->
-            <Setter Property="MinHeight" Value="200"/> <!-- Минимальная высота -->
+            <Setter Property="MinWidth" Value="300"/> 
+            <Setter Property="MinHeight" Value="200"/> 
         </Style>
     </UserControl.Styles>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/> <!-- Автоматическое масштабирование -->
-            <RowDefinition Height="*"/> <!-- Масштабирование оставшейся части -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
         
         <!-- Панель с фильтрами -->
         <StackPanel Grid.Row="0" Background="#4E7CF9" Orientation="Horizontal">
-            <Image Source="../Images/logo.png" Width="200" VerticalAlignment="Center" Margin="20"/> <!-- Фиксированный размер изображения -->
+            <Image Source="../Images/logo.png" Width="200" VerticalAlignment="Center" Margin="20"/> 
             <TextBox x:Name="SearchTextBox" VerticalAlignment="Center" HorizontalAlignment="Stretch"
                      Watermark="Поиск..." PropertyChanged="SearchTextBox_OnPropertyChanged"/>
             <Button Content="Добавить" HorizontalAlignment="Stretch" x:Name="AddBtn" Margin="15"
@@ -64,12 +64,12 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/> <!-- Автоматическое масштабирование -->
-                            <ColumnDefinition Width="*"/> <!-- Масштабирование оставшейся части -->
-                            <ColumnDefinition Width="Auto"/> <!-- Автоматическое масштабирование -->
+                            <ColumnDefinition Width="Auto"/> 
+                            <ColumnDefinition Width="*"/> 
+                            <ColumnDefinition Width="Auto"/> 
                         </Grid.ColumnDefinitions>
                         
-                        <Image Grid.Column="0" Source="{Binding ImageBook}" Width="200" Margin="20"/> <!-- Фиксированный размер изображения -->
+                        <Image Grid.Column="0" Source="{Binding ImageBook}" Width="200" Margin="20"/> 
                         
                         <StackPanel Grid.Column="1" Margin="20">
                             <TextBlock Text="{Binding BBK}"/>
