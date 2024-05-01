@@ -81,11 +81,11 @@
             <StackPanel>
                 <TextBox Watermark="Название" x:Name="Title"/>
                 <TextBox Watermark="Название серии" x:Name="SeriesName"/>
-                <TextBox Watermark="Автор" x:Name="Author"/>
-                <TextBox Watermark="Редактор" x:Name="Editor"/>  
+                <TextBox Watermark="Авторы" x:Name="Author"/>
+                <TextBox Watermark="Редакторы" x:Name="Editor"/>  
                 <TextBox Watermark="Издатель" x:Name="Publisher"/> 
                 <TextBox Watermark="Место публикации" x:Name="PlaceOfPublication"/> 
-                <CalendarDatePicker x:Name="YearOfPublication"/> 
+                <TextBox x:Name="YearOfPublication" Watermark="Дата публикации"/> 
                 <TextBox Watermark="BBK" x:Name="BBK"/>
                 <TextBox Watermark="Аннотация" x:Name="Annotation"
                          VerticalContentAlignment="Top"

@@ -23,7 +23,7 @@ namespace ElMaDesktop.Classes;
 
 public partial class AddEditUserControll : UserControl
 {
-    BookRequest booksCard; //у нас буккарта
+    BookRequest booksCard;
     private byte[] imageBytes;
     private string imageName;
     private List<int> selectedThemeIds = new List<int>();
@@ -40,7 +40,7 @@ public partial class AddEditUserControll : UserControl
         Editor = this.Find<TextBox>("Editor");
         Publisher = this.Find<TextBox>("Publisher");
         PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
-        YearOfPublication = this.Find<CalendarDatePicker>("YearOfPublication");
+        YearOfPublication = this.Find<TextBox>("YearOfPublication");
         BBK = this.Find<TextBox>("BBK");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
         SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
@@ -57,7 +57,7 @@ public partial class AddEditUserControll : UserControl
         Editor = this.Find<TextBox>("Editor");
         Publisher = this.Find<TextBox>("Publisher");
         PlaceOfPublication = this.Find<TextBox>("PlaceOfPublication");
-        YearOfPublication = this.Find<CalendarDatePicker>("YearOfPublication");
+        YearOfPublication = this.Find<TextBox>("YearOfPublication");
         ThemesListBox = this.Find<ListBox>("ThemesListBox");
         SearchThemeBox = this.Find<TextBox>("SearchThemeBox");
         AddThemeTextBox = this.Find<TextBox>("AddThemeTextBox");
@@ -71,14 +71,22 @@ public partial class AddEditUserControll : UserControl
     private async void LoadEditBook(BookRequest book)
     {
         Title.Text = book.Title;
-        Editor.Text = book.Editor;
+        Author.Text = "";
+        Editor.Text = "";
+        foreach (var autor in book.AuthorBook)
+        {
+            Author.Text += Author.Text.Length == 0 ? autor : ", " + autor;
+        }
+        foreach (var editor in book.Editor)
+        {
+            Editor.Text += Editor.Text.Length == 0 ? editor : ", " + editor;
+        }
         Annotation.Text = book.Annotation;
-        Author.Text = book.AuthorBook;
         Publisher.Text = book.Publisher;
         SeriesName.Text = book.SeriesName;
         BBK.Text = book.BBK;
         PlaceOfPublication.Text = book.PlaceOfPublication;
-        YearOfPublication.SelectedDate = DateTime.Parse(book.YearOfPublication.ToString());
+        YearOfPublication.Text = book.YearOfPublication.ToString();
         imageName = book.ImageName;
         imageBytes = book.Image;
         var file = Path.Combine(Directory.GetCurrentDirectory(), "Images").Replace("\\bin\\Debug\\net7.0", "");
@@ -100,13 +108,13 @@ public partial class AddEditUserControll : UserControl
         var bookCard = new BookRequest 
         {
             Title = Title.Text,
-            SeriesName = SeriesName.Text,
-            AuthorBook = Author.Text,
-            Editor = Editor.Text,
+            SeriesName = SeriesName.Text == null ? "" : SeriesName.Text,
+            AuthorBook = Author.Text== null ? new string []{} : Author.Text.Split(", "),
+            Editor = Editor.Text == null ? new string []{} : Editor.Text.Split(", "),
             Publisher = Publisher.Text,
             PlaceOfPublication = PlaceOfPublication.Text,
-            YearOfPublication = DateOnly.Parse(YearOfPublication.Text),
-            Annotation = Annotation.Text,
+            YearOfPublication = int.Parse(YearOfPublication.Text),
+            Annotation = Annotation.Text == null ? " " : Annotation.Text,
             Image = imageBytes == null ? new byte[]{} : imageBytes,
             ImageName = imageName != "" && imageName != null ? imageName : "picture.png", 
             BBK = BBK.Text
@@ -264,16 +272,6 @@ public partial class AddEditUserControll : UserControl
 
         if (editMode && booksCard.Themes.Count != 0)
         {
-            /*for (int i = 0; i < ThemesListBox.Items.Count; i++)
-            {
-                if (ThemesListBox.Items[i] is CheckBox chkBox)
-                {
-                    if (booksCard.Themes.Contains(int.Parse(chkBox.Tag.ToString())))
-                    {
-                        chkBox.IsChecked = true;
-                    }
-                }
-            }*/
             foreach (var theme in booksCard.Themes)
             {
                 (ThemesListBox.Items.Where(i => (i as ThemesListItem).ThemesId == theme).First() as ThemesListItem).IsActive = true;

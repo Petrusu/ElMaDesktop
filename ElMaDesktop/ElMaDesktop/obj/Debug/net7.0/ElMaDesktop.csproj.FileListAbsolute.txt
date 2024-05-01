@@ -407,8 +407,9 @@ C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\refint\ElMaDesktop.dll
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.dll
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.pdb
-C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.csproj.CopyComplete
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.genruntimeconfig.cache
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ref\ElMaDesktop.dll
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Microsoft.AspNetCore.Http.Features.dll
 C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesktop.sourcelink.json
+C:\Users\Petrusu\Desktop\diplom\ElMaDesktop\ElMaDesktop\ElMaDesktop\ElMaDesktop\obj\Debug\net7.0\ElMaDesk.21BA071C.Up2Date
