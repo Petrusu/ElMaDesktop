@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 
@@ -35,3 +36,4 @@ public class BooksCard
     public string Authorsname { get; set; } = null!;
     public string Editorname { get; set; } = null!;
 }
+

@@ -16,121 +16,140 @@ using ElMaDesktop.Classes;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ElMaDesktop.UserPages;
 
 public partial class MainUserControll : UserControl
 {
+    private int _currentPage = 1;
+    private int _totalPages;
+
+    public string CurrentPageDisplay => $"Страница {_currentPage} из {_totalPages}";
+
     public MainUserControll()
     {
         InitializeComponent();
     }
+
     public MainUserControll(string jwt)
     {
         InitializeComponent();
         SearchTextBox = this.Find<TextBox>("SearchTextBox");
         AddBtn = this.Find<Button>("AddBtn");
         BooksListBox = this.Find<ListBox>("BooksListBox");
+        LoadingProgressBar = this.Find<ProgressBar>("LoadingProgressBar");
         LoadListBox();
     }
 
-    private async Task LoadListBox()
+   private async Task LoadListBox(int page = 1)
+{
+    LoadingProgressBar.Value = 0;
+
+    using (var httpClient = new HttpClient())
     {
-        //Запрос к API для получения данных книг
-        using (var httpClient = new HttpClient())
+        try
         {
-            try
+            var response = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/fillbookOnPageDesktop?page={page}&size=20");
+            if (LoadingProgressBar != null)
             {
-                var response = await httpClient.GetAsync("http://localhost:5163/api/ForAllUsers/fillbook");
-                if (response.IsSuccessStatusCode)
+                LoadingProgressBar.Value = 10;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var responseData = JObject.Parse(jsonString);
+
+                var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(responseData["Books"].ToString());
+                _totalPages = (int)responseData["TotalPages"];
+
+                if (booksData != null && SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    // Преобразование полученных данных в объекты класса BooksCard
-                    var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(jsonString);
-                    
-                    if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
-                    {
-                        string searchText = SearchTextBox.Text.ToLower();
-                        booksData = booksData.Where(book => 
-                            book.Title.ToLower().Contains(searchText) || 
-                            (book.Authors != null && book.Authors.Any(author => author.ToLower().Contains(searchText))) ||
-                            (book.Editors != null && book.Editors.Any(editor => editor.ToLower().Contains(searchText)))
-                        ).ToList();
-                    }
+                    string searchText = SearchTextBox.Text.ToLower();
+                    booksData = booksData.Where(book => 
+                        book.Title.ToLower().Contains(searchText) || 
+                        (book.Authors != null && book.Authors.Any(author => author.ToLower().Contains(searchText))) ||
+                        (book.Editors != null && book.Editors.Any(editor => editor.ToLower().Contains(searchText)))
+                    ).ToList();
+                }
 
-                    else if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
-                    {
-                        booksData = booksData.Where(book => book.Author.ToLower().Contains(SearchTextBox.Text))
-                            .ToList();
-                    }
+                List<BooksCard> booksCards = new List<BooksCard>();
+                int totalBooks = booksData.Count;
 
-                    List<BooksCard> booksCards = new List<BooksCard>();
-                    
-                    foreach (var book in booksData)
-                    {
-                        BooksCard booksCard = new BooksCard();
+                if (LoadingProgressBar != null)
+                {
+                    LoadingProgressBar.Value = 50;
+                }
 
-                        booksCard.BookId = book.BookId;
-                        if (book.Image != null)
+                foreach (var book in booksData)
+                {
+                    BooksCard booksCard = new BooksCard
+                    {
+                        BookId = book.BookId,
+                        BBK = book.BBK,
+                        Title = book.Title,
+                        SeriesName = book.SeriesName,
+                        Publisher = book.Publisher,
+                        PlaceOfPublication = book.PlaceOfPublication,
+                        YearOfPublication = book.YearOfPublication
+                    };
+
+                    if (book.Image != null)
+                    {
+                        using (MemoryStream stream = new MemoryStream(book.Image))
                         {
-                            using (MemoryStream stream = new MemoryStream(book.Image))
-                            {
-                                Bitmap bitmap = new Bitmap(stream);
-                                booksCard.ImageBook = bitmap;
-                            }
+                            booksCard.ImageBook = new Bitmap(stream);
                         }
-                        else
+                    }
+                    else
+                    {
+                        string file = Path.Combine(Directory.GetCurrentDirectory(), "Images").Replace("bin\\Debug\\net7.0", "");
+                        try
                         {
-                            string file = Path.Combine(Directory.GetCurrentDirectory(), "Images").Replace("bin\\Debig\\net7.0", "");
-                            try
-                            {
-                                Bitmap bitmap = new Bitmap(Path.Combine(file, "picture.png"));
-                                booksCard.ImageBook = bitmap;
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                                throw;
-                            }
+                            Bitmap bitmap = new Bitmap(Path.Combine(file, "picture.png"));
+                            booksCard.ImageBook = bitmap;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
                             booksCard.ImageBook = new Bitmap("picture.png");
                         }
-                        booksCard.BBK = $"ББК: {book.BBK}";
-                        booksCard.Title = $"Название: {book.Title}";
-                        booksCard.SeriesName = $"Название серии: {book.SeriesName}";
-                        booksCard.Publisher = $"Издатель: {book.Publisher}";
-                        booksCard.PlaceOfPublication = $"Место публикации: {book.PlaceOfPublication}";
-                        booksCard.YearOfPublication = $"Дата публикации: {book.YearOfPublication}";
-                        if (book.Authors.Count != 0)
-                        {
-                            booksCard.Authorsname = $"Автор: {string.Join(", ", book.Authors)}";
-                        }
-                        if (book.Editors.Count != 0)
-                        {
-                            booksCard.Editorname = $"Редактор: {string.Join(", ", book.Editors)}";
-                        }
-                        
-                        
-                        
-                        booksCards.Add(booksCard);
                     }
-                    BooksListBox.ItemsSource = booksCards;
-                }
-            }
-            catch (Exception e)
-            {
-                var box = MessageBoxManager
-                    .GetMessageBoxStandard("Ошибка", $"Ошибка: {e}",
-                        ButtonEnum.Ok);
 
-                var result = await box.ShowAsync();
+                    if (book.Authors != null && book.Authors.Count != 0)
+                    {
+                        booksCard.Authorsname = string.Join(", ", book.Authors);
+                    }
+                    if (book.Editors != null && book.Editors.Count != 0)
+                    {
+                        booksCard.Editorname = string.Join(", ", book.Editors);
+                    }
+
+                    booksCards.Add(booksCard);
+                }
+
+                if (LoadingProgressBar != null)
+                {
+                    LoadingProgressBar.Value = 100;
+                }
+
+                BooksListBox.ItemsSource = booksCards;
+            }
+            else
+            {
+                Console.WriteLine("Response status code: " + response.StatusCode);
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response error content: " + errorContent);
             }
         }
+        catch (Exception e)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {e.Message}", ButtonEnum.Ok);
+            var result = await box.ShowAsync();
+            Console.WriteLine(e);
+        }
     }
-    
-    private void SortComboBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        LoadListBox();
-    }
+}
 
     private void AddBtn_OnClick(object? sender, RoutedEventArgs e)
     {
@@ -147,43 +166,27 @@ public partial class MainUserControll : UserControl
     {
         try
         {
-            // Получение Id книги из Tag кнопки
             var Id = (sender as Button).Tag.ToString();
-
-            // Создание HttpClient
             using (HttpClient client = new HttpClient())
             {
-                // Задание URL для удаления книги
                 string apiUrl = $"http://localhost:5163/api/ForAdmin/DeleteBook?bookId={Id}";
-
-                // Отправка DELETE-запроса на сервер
                 HttpResponseMessage response = await client.PostAsync(apiUrl, null);
 
-                // Проверка успешности операции
                 if (response.IsSuccessStatusCode)
                 {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard("Готово", "Книга успешно удалена!",
-                            ButtonEnum.Ok);
-
+                    var box = MessageBoxManager.GetMessageBoxStandard("Готово", "Книга успешно удалена!", ButtonEnum.Ok);
                     var result = await box.ShowAsync();
                 }
                 else
                 {
-                    var box = MessageBoxManager
-                        .GetMessageBoxStandard("Ошибка", $"Произошла ошибка при удалении книги. Код ошибки:{response.StatusCode}",
-                            ButtonEnum.Ok);
-
+                    var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Произошла ошибка при удалении книги. Код ошибки:{response.StatusCode}", ButtonEnum.Ok);
                     var result = await box.ShowAsync();
                 }
             }
         }
         catch (Exception ex)
         {
-            var box = MessageBoxManager
-                .GetMessageBoxStandard("Ошибка", $"Ошибка: {e}",
-                    ButtonEnum.Ok);
-
+            var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {ex.Message}", ButtonEnum.Ok);
             var result = await box.ShowAsync();
         }
 
@@ -192,7 +195,6 @@ public partial class MainUserControll : UserControl
 
     private async void BooksListBox_OnSelectionChanged(object? sender, TappedEventArgs tappedEventArgs)
     {
-        
         var selectedBook = ((sender as ListBox).SelectedItem as BooksCard);
         if (selectedBook == null)
         {
@@ -207,20 +209,17 @@ public partial class MainUserControll : UserControl
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    // Преобразование полученных данных в объекты класса BooksCard
                     book = System.Text.Json.JsonSerializer.Deserialize<BookRequest>(jsonString);
                 }
             }
             catch (Exception ex)
             {
-                var box = MessageBoxManager
-                    .GetMessageBoxStandard("Ошибка", $"Ошибка: {ex}",
-                        ButtonEnum.Ok);
-
+                var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {ex.Message}", ButtonEnum.Ok);
                 var result = await box.ShowAsync();
             }
         }
-        BookRequest br = new BookRequest()
+
+        BookRequest br = new BookRequest
         {
             Title = book.Title,
             Annotation = book.Annotation,
@@ -229,16 +228,33 @@ public partial class MainUserControll : UserControl
             Publisher = book.Publisher,
             PlaceOfPublication = book.PlaceOfPublication,
             YearOfPublication = book.YearOfPublication,
-            BBK= book.BBK,
+            BBK = book.BBK,
             Editor = book.Editor,
             Id = book.Id,
             Image = book.Image,
             Themes = book.Themes,
             ImageName = book.ImageName
         };
+
         AddEditUserControll editUserControll = new AddEditUserControll(br);
         NavigationManager.NavigateTo(editUserControll);
     }
 
-   
+    private void PreviousPageBtn_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            LoadListBox(_currentPage);
+        }
+    }
+
+    private void NextPageBtn_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_currentPage < _totalPages)
+        {
+            _currentPage++;
+            LoadListBox(_currentPage);
+        }
+    }
 }

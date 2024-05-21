@@ -158,7 +158,7 @@ public partial class AddEditUserControll : UserControl
                     {
                         var bitmap = new Bitmap(stream);
                         await Dispatcher.UIThread.InvokeAsync(() => { ImageBook.Source = bitmap; });
-                        imageName = selectedFiles[0].Split("\\").Last();
+                        imageName = DateTime.Now.Microsecond.ToString() + DateTime.Now.Millisecond.ToString() + "." + selectedFiles[0].Split(".").Last();
                     }
                 }
                 catch (Exception ex)

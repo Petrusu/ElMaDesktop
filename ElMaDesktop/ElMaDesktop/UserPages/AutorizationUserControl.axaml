@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="ElMaDesktop.UserPages.AutorizationUserControl"
              FontFamily="Century Gothic">
     <UserControl.Styles>
@@ -29,7 +29,7 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
     </UserControl.Styles>
-    <Grid>
+    <Grid Background="#4E7CF9">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/> 
             <ColumnDefinition Width="*"/> 
@@ -40,16 +40,19 @@
             <RowDefinition Height="*"/> 
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
-                    Background="#4E7CF9"
-                    Orientation="Horizontal">
+                    Orientation="Vertical" VerticalAlignment="Center">
             <Image Source="../Images/logo.png" MaxHeight="150" Margin="20"/>
             <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock Text="ElMa-rtk" FontSize="40" Foreground="#EEF2FF"/>
                 <TextBlock Text="Электронный библиотечный каталог" 
                            FontSize="20"
-                           Foreground="#EEF2FF"/>
+                           Foreground="#EEF2FF" TextWrapping="Wrap"/>
             </StackPanel>
         </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0" Background="White"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" Background="White"/>
+        <StackPanel Grid.Column="1" Grid.Row="2" Background="White"/>
+        
         <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" 
                     VerticalAlignment="Center">
             <TextBlock Text="Авторизация"  Foreground="#1A3FA3"/>

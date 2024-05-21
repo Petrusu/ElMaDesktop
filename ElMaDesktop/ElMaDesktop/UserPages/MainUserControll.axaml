@@ -2,9 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:classes="clr-namespace:ElMaDesktop.Classes"
              mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
              x:Class="ElMaDesktop.UserPages.MainUserControll"
              FontFamily="Century Gothic">
+    <UserControl.Resources>
+        <classes:TextFormatConverter x:Key="TextFormatConverter"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBox">
             <Setter Property="CornerRadius" Value="50"/>
@@ -47,6 +51,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/> 
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/> 
         </Grid.RowDefinitions>
         
         <!-- Панель с фильтрами -->
@@ -58,35 +64,89 @@
                     Click="AddBtn_OnClick"/>
         </StackPanel>
         
+        <ProgressBar Grid.Row="2" x:Name="LoadingProgressBar" Minimum="0" Maximum="100" Height="30" Margin="10"/>
+        
         <!-- Список книг -->
-        <ListBox Grid.Row="1" x:Name="BooksListBox" Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/> 
-                            <ColumnDefinition Width="*"/> 
-                            <ColumnDefinition Width="Auto"/> 
-                        </Grid.ColumnDefinitions>
-                        
-                        <Image Grid.Column="0" Source="{Binding ImageBook}" Width="200" Margin="20"/> 
-                        
-                        <StackPanel Grid.Column="1" Margin="20">
-                            <TextBlock Text="{Binding BBK}"/>
-                            <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding SeriesName}" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding Publisher}"/>
-                            <TextBlock Text="{Binding PlaceOfPublication}"/>
-                            <TextBlock Text="{Binding YearOfPublication}"/>
-                            <TextBlock Text="{Binding Authorsname}" />
-                            <TextBlock Text="{Binding Editorname}" />
-                        </StackPanel>
-                        
-                        <Button Grid.Column="2" Content="Удалить" x:Name="DeliteBtn" Margin="20"
-                                Click="DeliteBtn_OnClick" Tag="{Binding BookId}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+<ListBox Grid.Row="1" x:Name="BooksListBox" Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
+    <ListBox.ItemTemplate>
+        <DataTemplate>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/> 
+                    <ColumnDefinition Width="*"/> 
+                    <ColumnDefinition Width="Auto"/> 
+                </Grid.ColumnDefinitions>
+                
+                <Image Grid.Column="0" Source="{Binding ImageBook}" Width="200" Margin="20"/> 
+                
+                <LayoutTransformControl Grid.Column="1" Margin="20">
+                    <LayoutTransformControl.LayoutTransform>
+                        <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                    </LayoutTransformControl.LayoutTransform>
+                    <StackPanel>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="ББК:" FontWeight="Bold"/>
+                                <Run Text="{Binding BBK}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Название:" FontWeight="Bold"/>
+                                <Run Text="{Binding Title}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Название серии:" FontWeight="Bold"/>
+                                <Run Text="{Binding SeriesName}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Издатель:" FontWeight="Bold"/>
+                                <Run Text="{Binding Publisher}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Место публикации:" FontWeight="Bold"/>
+                                <Run Text="{Binding PlaceOfPublication}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Дата публикации:" FontWeight="Bold"/>
+                                <Run Text="{Binding YearOfPublication}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Автор:" FontWeight="Bold"/>
+                                <Run Text="{Binding Authorsname}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Inlines>
+                                <Run Text="Редактор:" FontWeight="Bold"/>
+                                <Run Text="{Binding Editorname}"/>
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                    </StackPanel>
+                </LayoutTransformControl>
+                
+                <Button Grid.Column="2" Content="Удалить" x:Name="DeliteBtn" Margin="20"
+                        Click="DeliteBtn_OnClick" Tag="{Binding BookId}"/>
+            </Grid>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
+
+        <!-- Панель пагинации -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+            <Button Content="Предыдущая страница" Click="PreviousPageBtn_OnClick" Margin="10"/>
+            <TextBlock Text="{Binding CurrentPageDisplay}" VerticalAlignment="Center"/>
+            <Button Content="Следующая страница" Click="NextPageBtn_OnClick" Margin="10"/>
+        </StackPanel>
     </Grid>
 </UserControl>
