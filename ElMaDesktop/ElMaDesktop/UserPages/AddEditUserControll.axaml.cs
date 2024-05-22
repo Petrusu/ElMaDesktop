@@ -99,8 +99,6 @@ public partial class AddEditUserControll : UserControl
             Bitmap bitmap = new Bitmap(Path.Combine(file, "picture.png"));
             ImageBook.Source = bitmap;
         }
-
-        PlaceOfPublication.Text = book.Title;
     }
 
     private void Save1Btn_OnClick(object? sender, RoutedEventArgs e) //добавление
