@@ -189,11 +189,11 @@ public partial class AddEditUserControll : UserControl
 
             if (editMode)
             {
-                serverUrl = "http://localhost:5163/api/ForAdmin/EditBook";
+                serverUrl = "http://194.146.242.26:7777/api/ForAdmin/EditBook";
             }
             else
             {
-                serverUrl = "http://localhost:5163/api/ForAdmin/AddNewBook";
+                serverUrl = "http://194.146.242.26:7777/api/ForAdmin/AddNewBook";
             }
 
             // Отправка POST-запроса
@@ -240,7 +240,7 @@ public partial class AddEditUserControll : UserControl
         {
             try
             {
-                var response = await client.GetAsync("http://localhost:5163/api/ForAllUsers/fillthemes");
+                var response = await client.GetAsync("http://194.146.242.26:7777/api/ForAllUsers/fillthemes");
                 response.EnsureSuccessStatusCode(); // Генерирует исключение в случае ошибки
 
                 var themesJson = await response.Content.ReadAsStringAsync();
@@ -289,7 +289,7 @@ public partial class AddEditUserControll : UserControl
             // Создание HttpClient
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5163/api/ForAdmin/AddTheme");
+                client.BaseAddress = new Uri("http://194.146.242.26:7777/api/ForAdmin/AddTheme");
 
                 // Отправка POST-запроса
                 HttpResponseMessage response = await client.PostAsync("AddTheme",

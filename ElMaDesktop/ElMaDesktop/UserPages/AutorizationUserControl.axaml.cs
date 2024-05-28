@@ -33,7 +33,7 @@ public partial class AutorizationUserControl : UserControl
                 // Отправляем POST-запрос к локальному API
                 HttpResponseMessage responseMessage =
                     await client.PostAsync(
-                        $"http://localhost:5163/api/ForAllUsers/login?login={LoginTextBox.Text}&password={PasswordTextBox.Text}",
+                        $"http://194.146.242.26:7777/api/ForAllUsers/login?login={LoginTextBox.Text}&password={PasswordTextBox.Text}",
                         null);
 
                 // Проверяем успешность запроса

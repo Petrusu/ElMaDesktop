@@ -50,7 +50,7 @@ public partial class MainUserControll : UserControl
     {
         try
         {
-            var response = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/fillbookOnPageDesktop?page={page}&size=20");
+            var response = await httpClient.GetAsync($"http://194.146.242.26:7777/api/ForAllUsers/fillbookOnPageDesktop?page={page}&size=20");
             if (LoadingProgressBar != null)
             {
                 LoadingProgressBar.Value = 10;
@@ -169,7 +169,7 @@ public partial class MainUserControll : UserControl
             var Id = (sender as Button).Tag.ToString();
             using (HttpClient client = new HttpClient())
             {
-                string apiUrl = $"http://localhost:5163/api/ForAdmin/DeleteBook?bookId={Id}";
+                string apiUrl = $"http://194.146.242.26:7777/api/ForAdmin/DeleteBook?bookId={Id}";
                 HttpResponseMessage response = await client.PostAsync(apiUrl, null);
 
                 if (response.IsSuccessStatusCode)
@@ -205,7 +205,7 @@ public partial class MainUserControll : UserControl
         {
             try
             {
-                var response = await httpClient.GetAsync($"http://localhost:5163/api/ForAllUsers/getinformationaboutbook?bookId={selectedBook.BookId}");
+                var response = await httpClient.GetAsync($"http://194.146.242.26:7777/api/ForAllUsers/getinformationaboutbook?bookId={selectedBook.BookId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
