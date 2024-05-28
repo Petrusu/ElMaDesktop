@@ -52,7 +52,7 @@ public partial class AutorizationUserControl : UserControl
                 else
                 {
                     var box = MessageBoxManager
-                        .GetMessageBoxStandard("Ошибка", $"Ошибка: {responseMessage.StatusCode}, проверьте логин и пароль",
+                        .GetMessageBoxStandard("Ошибка", $"Ошибка: Что-то пошло не так, проверьте логин или пароль",
                             ButtonEnum.Ok);
 
                     var result = await box.ShowAsync();
@@ -62,7 +62,7 @@ public partial class AutorizationUserControl : UserControl
         catch (Exception exception)
         {
             var box = MessageBoxManager
-                .GetMessageBoxStandard("Ошибка", $"Ошибка:{exception}",
+                .GetMessageBoxStandard("Ошибка", $"Ошибка: Что-то пошло не так, сервер не отвечает",
                     ButtonEnum.Ok);
 
             var result = await box.ShowAsync();

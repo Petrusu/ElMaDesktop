@@ -51,7 +51,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/> 
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/> 
         </Grid.RowDefinitions>
         
@@ -64,7 +64,7 @@
                     Click="AddBtn_OnClick"/>
         </StackPanel>
         
-        <ProgressBar Grid.Row="2" x:Name="LoadingProgressBar" Minimum="0" Maximum="100" Height="30" Margin="10"/>
+        <ProgressBar Grid.Row="1" x:Name="LoadingProgressBar" IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         
         <!-- Список книг -->
 <ListBox Grid.Row="1" x:Name="BooksListBox" Tag="{Binding BookId}" Tapped="BooksListBox_OnSelectionChanged">
@@ -143,10 +143,10 @@
 </ListBox>
 
         <!-- Панель пагинации -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
-            <Button Content="Предыдущая страница" Click="PreviousPageBtn_OnClick" Margin="10"/>
+        <StackPanel x:Name="PaginationPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Предыдущая страница" Click="PreviousPageBtn_OnClick"/>
             <TextBlock Text="{Binding CurrentPageDisplay}" VerticalAlignment="Center"/>
-            <Button Content="Следующая страница" Click="NextPageBtn_OnClick" Margin="10"/>
+            <Button Content="Следующая страница" Click="NextPageBtn_OnClick"/>
         </StackPanel>
     </Grid>
 </UserControl>

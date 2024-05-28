@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ElMaDesktop")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6a323041ff8b27b3bf5f1175a533d00cd78af49")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf604c96740cb06926ff3925641bb94d3fd80c40")]
 [assembly: System.Reflection.AssemblyProductAttribute("ElMaDesktop")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ElMaDesktop")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

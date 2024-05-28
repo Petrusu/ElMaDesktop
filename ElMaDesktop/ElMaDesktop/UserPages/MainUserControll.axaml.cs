@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -18,87 +18,111 @@ using MsBox.Avalonia.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ElMaDesktop.UserPages;
-
-public partial class MainUserControll : UserControl
+namespace ElMaDesktop.UserPages
 {
-    private int _currentPage = 1;
-    private int _totalPages;
-
-    public string CurrentPageDisplay => $"Страница {_currentPage} из {_totalPages}";
-
-    public MainUserControll()
+    public partial class MainUserControll : UserControl, INotifyPropertyChanged
     {
-        InitializeComponent();
-    }
+        private int _currentPage = 1;
+        private int _totalPages;
+        private const int PageSize = 10; // Количество элементов на странице
+        private List<BooksCard> _allBooks = new List<BooksCard>();
+        private bool isErrorMessageShown = false;
+        private bool _isLoading = false;
 
-    public MainUserControll(string jwt)
-    {
-        InitializeComponent();
-        SearchTextBox = this.Find<TextBox>("SearchTextBox");
-        AddBtn = this.Find<Button>("AddBtn");
-        BooksListBox = this.Find<ListBox>("BooksListBox");
-        LoadingProgressBar = this.Find<ProgressBar>("LoadingProgressBar");
-        LoadListBox();
-    }
+        public string CurrentPageDisplay => $"Страница {_currentPage} из {_totalPages}";
 
-   private async Task LoadListBox(int page = 1)
-{
-    LoadingProgressBar.Value = 0;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-    using (var httpClient = new HttpClient())
-    {
-        try
+        public MainUserControll()
         {
-            var response = await httpClient.GetAsync($"http://194.146.242.26:7777/api/ForAllUsers/fillbookOnPageDesktop?page={page}&size=20");
-            if (LoadingProgressBar != null)
+            InitializeComponent();
+            DataContext = this;
+        }
+
+        public MainUserControll(string jwt) : this()
+        {
+            SearchTextBox = this.Find<TextBox>("SearchTextBox");
+            AddBtn = this.Find<Button>("AddBtn");
+            BooksListBox = this.Find<ListBox>("BooksListBox");
+            LoadingProgressBar = this.FindControl<ProgressBar>("LoadingProgressBar");
+            LoadListBox();
+        }
+
+        private async Task LoadListBox()
+        {
+            if (_isLoading) return;
+            _isLoading = true;
+
+            LoadingProgressBar.IsVisible = true;
+            BooksListBox.IsVisible = false;
+            PaginationPanel.IsVisible = false;
+
+            using (var httpClient = new HttpClient())
             {
-                LoadingProgressBar.Value = 10;
-            }
-            if (response.IsSuccessStatusCode)
-            {
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var responseData = JObject.Parse(jsonString);
-
-                var booksData = JsonConvert.DeserializeObject<List<BooksCard>>(responseData["Books"].ToString());
-                _totalPages = (int)responseData["TotalPages"];
-
-                if (booksData != null && SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
+                try
                 {
-                    string searchText = SearchTextBox.Text.ToLower();
-                    booksData = booksData.Where(book => 
-                        book.Title.ToLower().Contains(searchText) || 
-                        (book.Authors != null && book.Authors.Any(author => author.ToLower().Contains(searchText))) ||
-                        (book.Editors != null && book.Editors.Any(editor => editor.ToLower().Contains(searchText)))
-                    ).ToList();
-                }
-
-                List<BooksCard> booksCards = new List<BooksCard>();
-                int totalBooks = booksData.Count;
-
-                if (LoadingProgressBar != null)
-                {
-                    LoadingProgressBar.Value = 50;
-                }
-
-                foreach (var book in booksData)
-                {
-                    BooksCard booksCard = new BooksCard
+                    var response = await httpClient.GetAsync("http://194.146.242.26:7777/api/ForAllUsers/fillbook");
+                    if (response.IsSuccessStatusCode)
                     {
-                        BookId = book.BookId,
-                        BBK = book.BBK,
-                        Title = book.Title,
-                        SeriesName = book.SeriesName,
-                        Publisher = book.Publisher,
-                        PlaceOfPublication = book.PlaceOfPublication,
-                        YearOfPublication = book.YearOfPublication
-                    };
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var responseData = JArray.Parse(jsonString); // Используем JArray для разбора массива JSON
 
+                        _allBooks = JsonConvert.DeserializeObject<List<BooksCard>>(responseData.ToString());
+
+                        _totalPages = (int)Math.Ceiling((double)_allBooks.Count / PageSize);
+                        OnPropertyChanged(nameof(CurrentPageDisplay));
+                        ApplySearchAndDisplayPage();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Response status code: " + response.StatusCode);
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine("Response error content: " + errorContent);
+                    }
+                }
+                catch (Exception e)
+                {
+                    var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", "Ошибка: Не удалось загрузить список.", ButtonEnum.Ok);
+                    var result = await box.ShowAsync();
+                    isErrorMessageShown = true;
+                    Console.WriteLine(e);
+                }
+            }
+
+            _isLoading = false;
+            LoadingProgressBar.IsVisible = false;
+            BooksListBox.IsVisible = true;
+            PaginationPanel.IsVisible = true;
+        }
+
+
+        private void ApplySearchAndDisplayPage()
+        {
+            List<BooksCard> filteredBooks = _allBooks;
+
+            if (SearchTextBox != null && !string.IsNullOrEmpty(SearchTextBox.Text))
+            {
+                string searchText = SearchTextBox.Text.ToLower();
+                filteredBooks = filteredBooks.Where(book =>
+                    (book.Title.ToLower().Contains(searchText)) ||
+                    (book.Authors != null && book.Authors.Any(author => author != null && author.ToLower().Contains(searchText))) ||
+                    (book.Editors != null && book.Editors.Any(editor => editor != null && editor.ToLower().Contains(searchText)))
+                ).ToList();
+            }
+
+            _totalPages = (int)Math.Ceiling((double)filteredBooks.Count / PageSize);
+            OnPropertyChanged(nameof(CurrentPageDisplay));
+
+            var booksToDisplay = filteredBooks
+                .Skip((_currentPage - 1) * PageSize)
+                .Take(PageSize)
+                .Select(book =>
+                {
                     if (book.Image != null)
                     {
                         using (MemoryStream stream = new MemoryStream(book.Image))
                         {
-                            booksCard.ImageBook = new Bitmap(stream);
+                            book.ImageBook = new Bitmap(stream);
                         }
                     }
                     else
@@ -107,154 +131,124 @@ public partial class MainUserControll : UserControl
                         try
                         {
                             Bitmap bitmap = new Bitmap(Path.Combine(file, "picture.png"));
-                            booksCard.ImageBook = bitmap;
+                            book.ImageBook = bitmap;
                         }
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
-                            booksCard.ImageBook = new Bitmap("picture.png");
+                            book.ImageBook = new Bitmap("picture.png");
                         }
                     }
 
-                    if (book.Authors != null && book.Authors.Count != 0)
-                    {
-                        booksCard.Authorsname = string.Join(", ", book.Authors);
-                    }
-                    if (book.Editors != null && book.Editors.Count != 0)
-                    {
-                        booksCard.Editorname = string.Join(", ", book.Editors);
-                    }
+                    book.Authorsname = book.Authors != null ? string.Join(", ", book.Authors) : string.Empty;
+                    book.Editorname = book.Editors != null ? string.Join(", ", book.Editors) : string.Empty;
 
-                    booksCards.Add(booksCard);
-                }
+                    return book;
+                })
+                .ToList();
 
-                if (LoadingProgressBar != null)
-                {
-                    LoadingProgressBar.Value = 100;
-                }
-
-                BooksListBox.ItemsSource = booksCards;
-            }
-            else
-            {
-                Console.WriteLine("Response status code: " + response.StatusCode);
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response error content: " + errorContent);
-            }
+            BooksListBox.ItemsSource = booksToDisplay;
         }
-        catch (Exception e)
+
+        private void AddBtn_OnClick(object? sender, RoutedEventArgs e)
         {
-            var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {e.Message}", ButtonEnum.Ok);
-            var result = await box.ShowAsync();
-            Console.WriteLine(e);
+            AddEditUserControll addUserControll = new AddEditUserControll();
+            NavigationManager.NavigateTo(addUserControll);
         }
-    }
-}
 
-    private void AddBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
-        AddEditUserControll addUserControll = new AddEditUserControll();
-        NavigationManager.NavigateTo(addUserControll);
-    }
-
-    private void SearchTextBox_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        LoadListBox();
-    }
-
-    private async void DeliteBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
-        try
+        private void SearchTextBox_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
         {
-            var Id = (sender as Button).Tag.ToString();
-            using (HttpClient client = new HttpClient())
-            {
-                string apiUrl = $"http://194.146.242.26:7777/api/ForAdmin/DeleteBook?bookId={Id}";
-                HttpResponseMessage response = await client.PostAsync(apiUrl, null);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var box = MessageBoxManager.GetMessageBoxStandard("Готово", "Книга успешно удалена!", ButtonEnum.Ok);
-                    var result = await box.ShowAsync();
-                }
-                else
-                {
-                    var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Произошла ошибка при удалении книги. Код ошибки:{response.StatusCode}", ButtonEnum.Ok);
-                    var result = await box.ShowAsync();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {ex.Message}", ButtonEnum.Ok);
-            var result = await box.ShowAsync();
+            _currentPage = 1;
+            ApplySearchAndDisplayPage();
         }
 
-        LoadListBox();
-    }
-
-    private async void BooksListBox_OnSelectionChanged(object? sender, TappedEventArgs tappedEventArgs)
-    {
-        var selectedBook = ((sender as ListBox).SelectedItem as BooksCard);
-        if (selectedBook == null)
-        {
-            return;
-        }
-        BookRequest book = new BookRequest();
-        using (var httpClient = new HttpClient())
+        private async void DeliteBtn_OnClick(object? sender, RoutedEventArgs e)
         {
             try
             {
-                var response = await httpClient.GetAsync($"http://194.146.242.26:7777/api/ForAllUsers/getinformationaboutbook?bookId={selectedBook.BookId}");
-                if (response.IsSuccessStatusCode)
+                var Id = (sender as Button).Tag.ToString();
+                using (HttpClient client = new HttpClient())
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    book = System.Text.Json.JsonSerializer.Deserialize<BookRequest>(jsonString);
+                    string apiUrl = $"http://194.146.242.26:7777/api/ForAdmin/DeleteBook?bookId={Id}";
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, null);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var box = MessageBoxManager.GetMessageBoxStandard("Готово", "Книга успешно удалена!", ButtonEnum.Ok);
+                        var result = await box.ShowAsync();
+                    }
+                    else
+                    {
+                        var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", "Произошла ошибка при удалении книги.", ButtonEnum.Ok);
+                        var result = await box.ShowAsync();
+                        isErrorMessageShown = true;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", $"Ошибка: {ex.Message}", ButtonEnum.Ok);
+                var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", "Ошибка: Сервер не отвечает.", ButtonEnum.Ok);
                 var result = await box.ShowAsync();
+                isErrorMessageShown = true;
+            }
+
+            LoadListBox();
+        }
+
+        private async void BooksListBox_OnSelectionChanged(object? sender, TappedEventArgs tappedEventArgs)
+        {
+            var selectedBook = ((sender as ListBox).SelectedItem as BooksCard);
+            if (selectedBook == null)
+            {
+                return;
+            }
+            BookRequest book = new BookRequest();
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    var response = await httpClient.GetAsync($"http://194.146.242.26:7777/api/ForAllUsers/getinformationaboutbook?bookId={selectedBook.BookId}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        book = System.Text.Json.JsonSerializer.Deserialize<BookRequest>(jsonString);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var box = MessageBoxManager.GetMessageBoxStandard("Ошибка", "Ошибка: Сервер не отвечает.", ButtonEnum.Ok);
+                    var result = await box.ShowAsync();
+                    isErrorMessageShown = true;
+                }
+            }
+
+            var editUserControll = new AddEditUserControll(book);
+            NavigationManager.NavigateTo(editUserControll);
+        }
+
+        private void PreviousPageBtn_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                OnPropertyChanged(nameof(CurrentPageDisplay));
+                ApplySearchAndDisplayPage();
             }
         }
 
-        BookRequest br = new BookRequest
+        private void NextPageBtn_OnClick(object? sender, RoutedEventArgs e)
         {
-            Title = book.Title,
-            Annotation = book.Annotation,
-            AuthorBook = book.AuthorBook,
-            SeriesName = book.SeriesName,
-            Publisher = book.Publisher,
-            PlaceOfPublication = book.PlaceOfPublication,
-            YearOfPublication = book.YearOfPublication,
-            BBK = book.BBK,
-            Editor = book.Editor,
-            Id = book.Id,
-            Image = book.Image,
-            Themes = book.Themes,
-            ImageName = book.ImageName
-        };
-
-        AddEditUserControll editUserControll = new AddEditUserControll(br);
-        NavigationManager.NavigateTo(editUserControll);
-    }
-
-    private void PreviousPageBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (_currentPage > 1)
-        {
-            _currentPage--;
-            LoadListBox(_currentPage);
+            if (_currentPage < _totalPages)
+            {
+                _currentPage++;
+                OnPropertyChanged(nameof(CurrentPageDisplay));
+                ApplySearchAndDisplayPage();
+            }
         }
-    }
 
-    private void NextPageBtn_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (_currentPage < _totalPages)
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            _currentPage++;
-            LoadListBox(_currentPage);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

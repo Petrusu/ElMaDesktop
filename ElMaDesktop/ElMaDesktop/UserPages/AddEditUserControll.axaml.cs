@@ -226,7 +226,7 @@ public partial class AddEditUserControll : UserControl
             {
                 // Произошла ошибка при добавлении книги
                 var box = MessageBoxManager
-                    .GetMessageBoxStandard("Ошибка", $"Ошибка:{response}",
+                    .GetMessageBoxStandard("Ошибка", $"Ошибка: Что-то пошло не так, сервер не отвечает",
                         ButtonEnum.Ok);
 
                 var result = await box.ShowAsync();
@@ -310,7 +310,7 @@ public partial class AddEditUserControll : UserControl
                 else
                 {
                     var box = MessageBoxManager
-                        .GetMessageBoxStandard("Ошибка", $"Ошибка:{response}",
+                        .GetMessageBoxStandard("Ошибка", $"Ошибка: Что-то пошло не так, сервер не отвечает",
                             ButtonEnum.Ok);
 
                     var result = await box.ShowAsync();
@@ -320,7 +320,7 @@ public partial class AddEditUserControll : UserControl
         catch (Exception ex)
         {
             var box = MessageBoxManager
-                .GetMessageBoxStandard("Ошибка", $"Ошибка:{ex}",
+                .GetMessageBoxStandard("Ошибка", $"Ошибка: Что-то пошло не так, сервер не отвечает",
                     ButtonEnum.Ok);
 
             var result = await box.ShowAsync();
