@@ -37,10 +37,6 @@ namespace ElMaDesktop.UserPages
         {
             InitializeComponent();
             DataContext = this;
-        }
-
-        public MainUserControll(string jwt) : this()
-        {
             SearchTextBox = this.Find<TextBox>("SearchTextBox");
             AddBtn = this.Find<Button>("AddBtn");
             BooksListBox = this.Find<ListBox>("BooksListBox");

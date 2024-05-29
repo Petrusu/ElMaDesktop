@@ -46,7 +46,7 @@ public partial class AutorizationUserControl : UserControl
                         jwt = responseObject.loginResponse
                             .token; // Извлекаем токен из поля "token" внутри "loginResponse"
 
-                    MainUserControll mainPage = new MainUserControll(jwt);
+                    MainUserControll mainPage = new MainUserControll();
                     NavigationManager.NavigateTo(mainPage);
                 }
                 else
